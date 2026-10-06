@@ -1,0 +1,39 @@
+1
+00:00:00,300 --> 00:00:08,700
+AirPatch lets Apertus propose code fixes and checks every proposal offline, in isolated containers, against hidden tests.
+
+2
+00:00:09,300 --> 00:00:17,700
+To use a sovereign model for code, you must measure whether its changes work - privately and without trusting it.
+
+3
+00:00:18,300 --> 00:00:26,700
+Seven small steps, each in its own container. The model only writes text; deterministic code decides what passes.
+
+4
+00:00:27,300 --> 00:00:35,700
+We attack our own verifier. The probe finds nothing - and the positive control shows it would notice a leak.
+
+5
+00:00:36,300 --> 00:00:44,700
+Forty new test tasks, a frozen pre-registered plan, three model conditions and four model-free baselines.
+
+6
+00:00:45,300 --> 00:00:53,700
+A weak, negative result, reported as measured: each model solved 2 of 40 tasks with one answer; repairs fixed none.
+
+7
+00:00:54,300 --> 00:01:02,700
+The verifier showed the failing example and the model's own output - most repair answers simply repeated the previous answer.
+
+8
+00:01:03,300 --> 00:01:11,700
+Every answer is recorded. 'make run' without a key replays them offline and is labelled REPLAY everywhere.
+
+9
+00:01:12,300 --> 00:01:20,700
+We report the defect openly: found after the freeze, verified not to affect the results, fixed without touching them.
+
+10
+00:01:21,300 --> 00:01:29,700
+Docker and make are all you need. AirPatch: measure what a sovereign model writes - offline and reproducibly.

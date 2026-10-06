@@ -3,10 +3,11 @@
 A deeper write-up than the README: what we built, how it works, and what the
 numbers say.
 
-- **Track:** `Track 2B — AirPatch`
+- **Track:** Track 2B — Own Project (AirPatch)
 - **Event:** Online
-- **Team:** `team name` — `member`
-- **Demo:** `link to video`
+- **Team:** AhaWissenschaft AirPatch — William Kannenberg
+- **Demo:** https://github.com/AhaWissenschaft/airpatch/blob/main/track_2b/demo/airpatch_demo.mp4 (90 s, English subtitles)
+- **Repository:** https://github.com/AhaWissenschaft/airpatch
 
 > **Status of this report.** Every number below was measured. The Apertus
 > results come from one live run per model on 2026-10-05 against the CSCS

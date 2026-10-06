@@ -12,6 +12,12 @@ answer (95% CI 1-16%) and 3/40 with any of three; verifier feedback repaired
 none; no pre-registered comparison is distinguishable. Details:
 [`track_2b/results/comparison.md`](track_2b/results/comparison.md).
 
+Team AhaWissenschaft AirPatch (William Kannenberg) · Hack Apertus Online
+Hack, Track 2B (Own Project).
+
+- Technical report (PDF): [`track_2b/AhaWissenschaft_AirPatch_Report.pdf`](track_2b/AhaWissenschaft_AirPatch_Report.pdf)
+- Demo video (90 s): [`track_2b/demo/airpatch_demo.mp4`](track_2b/demo/airpatch_demo.mp4) (subtitles: [`airpatch_demo.srt`](track_2b/demo/airpatch_demo.srt))
+
 The project lives in [`track_2b/`](track_2b/):
 
 - [`track_2b/technical_report.md`](track_2b/technical_report.md) - the write-up
