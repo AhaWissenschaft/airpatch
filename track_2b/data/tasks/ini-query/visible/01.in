@@ -1,0 +1,14 @@
+; shop configuration
+name = Corner Shop
+[Server]
+host = localhost
+port = 8080   ; default port
+[database]
+User = admin
+password = "s3cret ; not a comment"
+===
+server.port
+database.user
+database.password
+mail.name
+mail.host

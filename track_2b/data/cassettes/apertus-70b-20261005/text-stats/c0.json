@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 8378,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "a6cc41ea3c48b15bd3e30d86c1509e8767ba59bed0417dda2901305451cc03c9",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "text-stats",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n\n    # Count paragraphs\n    paragraphs = []\n    current_paragraph = []\n    for line in text.splitlines():\n        stripped_line = line.strip()\n        if stripped_line:\n            current_paragraph.append(line)\n        else:\n            if current_paragraph:\n                paragraphs.append(\"\\n\".join(current_paragraph))\n                current_paragraph = []\n    if current_paragraph:\n        paragraphs.append(\"\\n\".join(current_paragraph))\n    paragraphs = [p for p in paragraphs if p.strip()]\n\n    # Count sentences\n    sentences = []\n    sentence = []\n    terminators = re.findall(r\"[.!?]+\", text)\n    for i, char in enumerate(text):\n        if char.isspace():\n            if sentence:\n                if i == len(text) - 1 or text[i + 1].isspace():\n                    if not any(\n                        t in sentence\n                        for t in [\".\", \"!\", \"?\"]\n                        if i + 1 < len(text) and text[i + 1].isspace()\n                    ):\n                        if (\n                            len(sentence) > 0\n                            and i < len(text) - 1\n                            and text[i + 1].isspace()\n                        ):\n                            sentences.append(\"\".join(sentence))\n                            sentence = []\n                    elif (\n                        i < len(text) - 1\n                        and text[i + 1].isspace()\n                        and len(sentence) > 0\n                        and text[i] in [\".\", \"!\", \"?\"]\n                    ):\n                        sentences.append(\"\".join(sentence))\n                        sentence = []\n                else:\n                    sentence.append(char)\n            continue\n        elif char in [\".\", \"!\", \"?\"]:\n            sentence.append(char)\n            if i < len(text) - 1 and text[i + 1].isspace():\n                sentences.append(\"\".join(sentence))\n                sentence = []\n            elif i == len(text) - 1:\n                sentences.append(\"\".join(sentence))\n                sentence = []\n        else:\n            sentence.append(char)\n\n    # Count words\n    words = re.findall(r\"[A-Za-z0-9']+\", text)\n\n    # Find longest word\n    longest_word = max(words, key=lambda x: len(x), default=\"-\")\n\n    print(\"paragraphs\", len(paragraphs))\n    print(\"sentences\", len(sentences))\n    print(\"words\", len(words))\n    print(\"longest\", longest_word)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 545,
+    "prompt_tokens": 790,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1335
+  }
+}

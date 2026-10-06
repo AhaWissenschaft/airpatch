@@ -1,0 +1,7 @@
+type ab
+delete 10
+print
+undo
+print
+redo
+print

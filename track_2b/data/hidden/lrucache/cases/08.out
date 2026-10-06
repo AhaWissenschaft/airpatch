@@ -1,0 +1,46 @@
+miss
+miss
+evict k3
+miss
+evict k6
+evict k5
+v8
+k3 k0 k1
+evict k1
+evict k0
+miss
+evict k3
+evict k2
+v11
+evict k4
+evict k0
+v16
+evict k5
+k1 k6 k2
+evict k2
+miss
+evict k6
+evict k1
+miss
+evict k4
+evict k3
+miss
+evict k6
+evict k5
+k3 k0 k1
+v29
+evict k1
+evict k0
+miss
+evict k3
+evict k2
+v32
+evict k4
+evict k0
+v37
+k6 k2 k5
+evict k5
+evict k2
+miss
+evict k6
+evict k1

@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2075,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "877f82253b723bb7983cb76807593e706e9198986c8c87d84a53420c704d1042",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "text-stats",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    paragraphs = [p.strip() for p in text.split('\\n\\n') if p.strip()]\n    paragraphs_count = len(paragraphs)\n\n    sentences = []\n    current_sentence = []\n    in_sentence = False\n    for line in text.split('\\n'):\n        line = line.strip()\n        if not line:\n            continue\n        if not in_sentence:\n            current_sentence = []\n            in_sentence = True\n        if re.search(r'[.!?]+', line):\n            sentences.append(''.join(current_sentence))\n            current_sentence = []\n            in_sentence = False\n        else:\n            current_sentence.append(line)\n    if current_sentence:\n        sentences.append(''.join(current_sentence))\n    sentences_count = len([s for s in sentences if s.strip()])\n\n    words = re.findall(r\"[A-Za-z0-9'-]+\", text)\n    words_count = len(words)\n    longest_word = max(words, key=len) if words else \"-\"\n\n    print(\"paragraphs\", paragraphs_count)\n    print(\"sentences\", sentences_count)\n    print(\"words\", words_count)\n    print(\"longest\", longest_word)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 282,
+    "prompt_tokens": 1297,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1579
+  }
+}

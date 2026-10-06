@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2778,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "47c5c37b10aae5c76f6d924123c002e68488b9b28241fce544044cda2ce96e0b",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "text-stats",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    paragraphs = [p.strip() for p in text.split('\\n\\n') if p.strip()]\n    paragraphs_count = len(paragraphs)\n\n    sentences_per_paragraph = []\n    current_sentences = []\n    in_sentence = False\n    for line in text.split('\\n'):\n        line = line.strip()\n        if not line:\n            if current_sentences:\n                sentences_per_paragraph.append(current_sentences)\n                current_sentences = []\n                in_sentence = False\n        else:\n            if not in_sentence:\n                sentence_end = False\n                for i, char in enumerate(line):\n                    if char in ['.', '!', '?']:\n                        if i == len(line) - 1:\n                            sentence_end = True\n                        else:\n                            next_char = line[i + 1]\n                            if next_char.isspace():\n                                sentence_end = True\n                            elif next_char in ['M', 'r', 'D', 's']:\n                                if line.startswith(('Mr', 'Mrs', 'Dr', 'St'), case=False):\n                                    sentence_end = False\n                                else:\n                                    sentence_end = True\n                    if sentence_end:\n                        current_sentences.append(line[:i])\n                if current_sentences:\n                    sentences_per_paragraph.append(current_sentences)\n                    current_sentences = []\n                    in_sentence = True\n            else:\n                current_sentences.append(line)\n    if current_sentences:\n        sentences_per_paragraph.append(current_sentences)\n    sentences_count = sum([len(s) for s_list in sentences_per_paragraph for s in s_list if s])\n\n    words = re.findall(r\"[A-Za-z0-9'-]+\", text)\n    words_count = len(words)\n    longest_word = max(words, key=len) if words else \"-\"\n\n    print(\"paragraphs\", paragraphs_count)\n    print(\"sentences\", sentences_count)\n    print(\"words\", words_count)\n    print(\"longest\", longest_word)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 440,
+    "prompt_tokens": 790,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1230
+  }
+}

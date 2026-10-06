@@ -1,0 +1,5 @@
+type abc
+delete 0
+print
+undo
+print

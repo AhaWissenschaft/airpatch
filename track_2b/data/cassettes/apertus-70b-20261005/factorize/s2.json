@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3311,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "df724022cb17054435f7af37ea97cd1040aeb01781b262cb1f5ead43b4050979",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "factorize",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        n = int(line)\n        is_negative = n < 0\n        abs_n = abs(n)\n\n        factors = []\n        m = abs_n\n        d = 2\n        while d * d <= m:\n            count = 0\n            while m % d == 0:\n                m //= d\n                count += 1\n            if count > 0:\n                if count > 1:\n                    factors.append(f\"{d}^{count}\")\n                else:\n                    factors.append(str(d))\n            d += 1\n        if m > 1:\n            factors.append(str(m))\n\n        if is_negative:\n            print(f\"-1 * {' * '.join(factors)}\")\n        else:\n            print(f\"{n} = {' * '.join(factors)}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 212,
+    "prompt_tokens": 552,
+    "prompt_tokens_details": {
+      "cached_tokens": 544,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 764
+  }
+}

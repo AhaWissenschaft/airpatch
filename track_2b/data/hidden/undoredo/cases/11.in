@@ -1,0 +1,11 @@
+type 12345
+delete 2
+delete 0
+undo
+print
+undo
+print
+redo
+redo
+redo
+print

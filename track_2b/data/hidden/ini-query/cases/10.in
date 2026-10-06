@@ -1,0 +1,8 @@
+[c]
+v = a ;b ; c
+w = a	#tab comment
+z = ;starts with semicolon
+===
+c.v
+c.w
+c.z

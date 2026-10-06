@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1367,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "c0",
+  "prompt_sha256": "10681dcf1d1134f912e8a044ccb6a24d4d5f4a55302e11d7711d7a1e5d5ea0fb",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "csv-fields",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef parse(line):\n    fields = []\n    current = \"\"\n    in_quotes = False\n    for ch in line:\n        if ch == '\"':\n            in_quotes = not in_quotes\n        elif ch == \",\" and not in_quotes:\n            fields.append(current)\n            current = \"\"\n        else:\n            current += ch\n    fields.append(current)\n    return fields\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.rstrip(\"\\n\")\n        if line:\n            print(\"\".join(f\"<{field}>\" for field in parse(line)))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 144,
+    "prompt_tokens": 927,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1071
+  }
+}

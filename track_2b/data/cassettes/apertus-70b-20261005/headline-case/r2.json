@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3019,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "r1",
+  "prompt_sha256": "08fa416b68bdaf57d20fdec6bc575b7d2c6f1afc7447655ec5f246d599b5d069",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "headline-case",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\nMINOR = {\"a\", \"an\", \"and\", \"as\", \"at\", \"but\", \"by\", \"for\", \"in\", \"nor\", \"of\", \"on\", \"or\", \"the\", \"to\"}\n\n\ndef headline(line):\n    out = []\n    for word in line.split():\n        stripped_word = word.strip('.,;:!?')\n        if stripped_word.lower() in MINOR:\n            if out and out[-1] != \"\":\n                out.append(stripped_word.lower())\n            else:\n                out.append(stripped_word.lower().capitalize())\n        else:\n            out.append(stripped_word.title())\n    return \" \".join(out)\n\n\ndef main():\n    for line in sys.stdin:\n        print(headline(line))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 181,
+    "prompt_tokens": 885,
+    "prompt_tokens_details": {
+      "cached_tokens": 640,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1066
+  }
+}

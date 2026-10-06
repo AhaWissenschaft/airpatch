@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 11252,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "477b6b30b6dfd6d159e95725138ed7acc464b4ebd3352fe7fba6fe4b51500935",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "common-slots",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta, datetime\n\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef clock(total_minutes):\n    total = total_minutes\n    hours = total // 60\n    minutes = total % 60\n    return f\"{hours:02d}:{minutes:02d}\"\n\n\ndef parse_time(s):\n    h, m = s.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef main():\n    settings = {}\n    busy = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if not parts:\n            continue\n        if parts[0] == \"busy\":\n            who, day_str, start_str, end_str = parts[1:]\n            day = datetime.strptime(day_str, \"%Y-%m-%d\").date()\n            start = parse_time(start_str)\n            end = parse_time(end_str)\n            busy.setdefault((who, day), []).append((start, end))\n        else:\n            settings[parts[0]] = parts[1:]\n    if \"days\" not in settings or len(settings[\"days\"]) != 2:\n        print(\"Invalid input: exactly one 'days <first> <last>' line required\")\n        return\n    if \"hours\" not in settings or len(settings[\"hours\"]) != 2:\n        print(\"Invalid input: exactly one 'hours <start> <end>' line required\")\n        return\n    if \"duration\" not in settings or len(settings[\"duration\"]) != 1:\n        print(\"Invalid input: exactly one 'duration <minutes>' line required\")\n        return\n    if \"buffer\" in settings:\n        if len(settings[\"buffer\"]) != 1:\n            print(\"Invalid input: 'buffer <minutes>' must appear at most once\")\n            return\n        buffer = int(settings[\"buffer\"][0])\n    else:\n        buffer = 0\n\n    first = date.fromisoformat(settings[\"days\"][0])\n    last = date.fromisoformat(settings[\"days\"][1])\n    open_at = parse_time(settings[\"hours\"][0])\n    close_at = parse_time(settings[\"hours\"][1])\n    required_duration = int(settings[\"duration\"][0])\n\n    day = first\n    while day <= last:\n        day_str = day.isoformat()\n        taken = []\n        if (\"A\", day_str) in busy:\n            taken.extend(busy[(\"A\", day_str)])\n        if (\"B\", day_str) in busy:\n            taken.extend(busy[(\"B\", day_str)])\n\n        # Sort busy intervals by start time\n        taken.sort(key=lambda x: x[0])\n\n        free_slots = []\n        cursor = open_at\n\n        for start, end in taken:\n            if cursor < start:\n                if (end - cursor) >= required_duration:\n                    free_slots.append(f\"{clock(cursor)}-{clock(start)}\")\n                cursor = end\n            else:\n                continue\n\n        if (close_at - cursor) >= required_duration:\n            free_slots.append(f\"{clock(cursor)}-{clock(close_at)}\")\n\n        if free_slots:\n            print(f\"{day_str} {' '.join(free_slots)}\")\n        else:\n            print(f\"{day_str} none\")\n\n        day += timedelta(days=1)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 743,
+    "prompt_tokens": 1507,
+    "prompt_tokens_details": {
+      "cached_tokens": 1504,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2250
+  }
+}

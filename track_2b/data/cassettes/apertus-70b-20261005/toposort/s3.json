@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3047,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "67fa9f5acf0bd7d30d0c3fc13e8323b06e2213d1a86dd3aeab711d4eca254e5b",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "toposort",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    deps = {}\n    seen = set()\n    for line in sys.stdin:\n        if not line.strip():\n            continue\n        name, _, rest = line.partition(\":\")\n        name = name.strip()\n        deps.setdefault(name, []).extend([dep.strip() for dep in rest.split()])\n\n    def visit(task):\n        if task in seen:\n            return False\n        seen.add(task)\n        for d in sorted(deps.get(task, [])):\n            if visit(d):\n                return True\n        seen.remove(task)\n        order.append(task)\n        return False\n\n    order = []\n    for task in sorted(deps):\n        if visit(task):\n            print(\"CYCLE: \" + \" \".join(sorted(seen)))\n            return\n\n    for task in order:\n        print(task)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 194,
+    "prompt_tokens": 602,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 796
+  }
+}

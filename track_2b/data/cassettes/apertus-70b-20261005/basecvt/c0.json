@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4437,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "713ebc931a6aec976538c6ccc266a69b55b245061960a3ef7f404e222807c7a7",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "basecvt",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\nDIGITS = \"0123456789abcdefghijklmnopqrstuvwxyz\"\n\n\ndef to_base(n, base):\n    out = \"\"\n    while n > 0:\n        out = DIGITS[n % base] + out\n        n //= base\n    return out\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            print(\"ERROR\")\n            continue\n        number, src_str, dst_str = parts\n        try:\n            src = int(src_str)\n            dst = int(dst_str)\n        except ValueError:\n            print(\"ERROR\")\n            continue\n        if not (2 <= src <= 36 and 2 <= dst <= 36):\n            print(\"ERROR\")\n            continue\n        try:\n            value = int(number, src)\n        except ValueError:\n            print(\"ERROR\")\n            continue\n        if value < 0:\n            print(\"-\" + to_base(abs(value), dst))\n        else:\n            result = to_base(value, dst)\n            print(result if result else \"0\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 276,
+    "prompt_tokens": 686,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 962
+  }
+}

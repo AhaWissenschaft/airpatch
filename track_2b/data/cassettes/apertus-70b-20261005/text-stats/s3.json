@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5136,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "47c5c37b10aae5c76f6d924123c002e68488b9b28241fce544044cda2ce96e0b",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "text-stats",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\n\n\ndef count_words(text):\n    return len(re.findall(r\"[A-Za-z0-9']+\", text))\n\n\ndef count_sentences(text):\n    terminators = re.split(r\"[.!?]+\", text)\n    sentences = []\n    for term in terminators:\n        term = term.strip()\n        if not term:\n            continue\n        if term == \".\":\n            prev_word = (\n                text.rsplit(\" \", 1)[-1].strip()\n                if text and text.rsplit()[-1].strip() == \".\"\n                else None\n            )\n            if prev_word and prev_word.lower() in {\"mr\", \"mrs\", \"dr\", \"st\"}:\n                sentences[-1] += term\n            else:\n                sentences.append(term)\n        else:\n            sentences.append(term)\n    return sum(1 for s in sentences if s.strip())\n\n\ndef count_paragraphs(text):\n    return sum(1 for p in text.split(\"\\n\\n\") if p.strip())\n\n\ndef main():\n    text = sys.stdin.read()\n    paragraphs = count_paragraphs(text)\n    sentences = count_sentences(text)\n    words = count_words(text)\n    longest_word = max((word for word in re.findall(r\"[A-Za-z0-9']+\", text) if word), key=lambda x: len(x), default=\"-\")\n    print(\"paragraphs\", paragraphs)\n    print(\"sentences\", sentences)\n    print(\"words\", words)\n    print(\"longest\", longest_word)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 340,
+    "prompt_tokens": 790,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1130
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4305,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "612b96052d9f1109afbf074e1419ee5184af5e1ff7c6e92fc79eff6283bae84e",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "postoffice",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = sys.stdin.read().split(\"\\n\")\n    k = int(lines[0])\n    free_at = [0] * k\n    served = left = max_wait = 0\n    queue = []\n    for i, line in enumerate(lines[1:], 1):\n        parts = line.split()\n        if not parts:\n            continue\n        name, arrival, duration, patience = parts[0], int(parts[1]), int(parts[2]), int(parts[3])\n        queue.append((name, arrival, duration, patience))\n\n    for name, arrival, duration, patience in queue:\n        earliest_s = max(arrival, *free_at)\n        counter = free_at.index(min(free_at))\n        wait = earliest_s - arrival\n        if wait > patience:\n            print(f\"{name} left\")\n            left += 1\n        else:\n            free_at[counter] = earliest_s + duration\n            print(f\"{name} {counter + 1} {earliest_s} {earliest_s + duration}\")\n            served += 1\n            max_wait = max(max_wait, wait)\n\n    print(f\"served {served} left {left} max wait {max_wait}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 283,
+    "prompt_tokens": 800,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1083
+  }
+}

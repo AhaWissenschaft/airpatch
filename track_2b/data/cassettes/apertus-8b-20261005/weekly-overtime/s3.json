@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2970,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "638bf28736e9d68d81a7af103a835c06e836211beb5cb39a55ab2c1aa1c0c38c",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "weekly-overtime",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime, timedelta\n\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef hm(total):\n    return f\"{total // 60}:{total % 60:02d}\"\n\n\ndef get_week_number(date_str):\n    date = datetime.strptime(date_str, \"%Y-%m-%d\")\n    isoweek = date.isocalendar()[1]\n    return f\"{date.year}-W{isoweek:02d}\"\n\n\ndef main():\n    target = {}\n    weeks = {}\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if not parts:\n            continue\n        if parts[0] == \"target\":\n            target[parts[1]] = minutes(parts[2])\n            continue\n        name, day_str, start_str, end_str = parts\n        date = datetime.strptime(day_str, \"%Y-%m-%d\")\n        start_time = datetime.strptime(start_str, \"%H:%M\")\n        end_time = datetime.strptime(end_str, \"%H:%M\")\n        if end_time < start_time:\n            end_time += timedelta(days=1)\n        week = get_week_number(date_str=day_str)\n        key = (name, week)\n        if key in weeks:\n            weeks[key] += minutes(end_time) - minutes(start_time)\n        else:\n            weeks[key] = minutes(end_time) - minutes(start_time)\n    balance = {}\n    for (name, week), total_minutes in weeks.items():\n        target_hours = target.get(name, 40 * 60)\n        diff_minutes = total_minutes - target_hours\n        balance[name] = balance.get(name, 0) + diff_minutes\n        sign = \"+\" if diff_minutes >= 0 else \"-\"\n        print(f\"{name} {week} {hm(total_minutes)} {sign}{hm(abs(diff_minutes))}\")\n    for name in sorted(balance.keys()):\n        overtime = max(balance[name], 0)\n        print(f\"{name} overtime {hm(overtime)}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 475,
+    "prompt_tokens": 1352,
+    "prompt_tokens_details": {
+      "cached_tokens": 1344,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1827
+  }
+}

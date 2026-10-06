@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3269,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "7658570ee53622e562adacfd9afd7dc7789ae00922b45d065e2d8fcb9f4d3e02",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "fracexpr",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom fractions import Fraction\n\ndef tokenize(text):\n    tokens = []\n    i = 0\n    while i < len(text):\n        ch = text[i]\n        if ch.isspace():\n            i += 1\n        elif ch.isdigit():\n            j = i\n            while j < len(text) and text[j].isdigit():\n                j += 1\n            tokens.append(text[i:j])\n            i = j\n        else:\n            tokens.append(ch)\n            i += 1\n    return tokens\n\n\nclass Parser:\n    def __init__(self, tokens):\n        self.tokens = tokens\n        self.pos = 0\n\n    def peek(self):\n        return self.tokens[self.pos] if self.pos < len(self.tokens) else None\n\n    def take(self):\n        tok = self.peek()\n        self.pos += 1\n        return tok\n\n    def expr(self):\n        left = self.term()\n        while self.peek() in (\"+\", \"-\"):\n            op = self.take()\n            right = self.expr()\n            if op == \"+\":\n                left = left + right\n            else:\n                left = left - right\n        return left\n\n    def term(self):\n        left = self.factor()\n        while self.peek() in (\"*\", \"/\"):\n            op = self.take()\n            right = self.term()\n            if op == \"*\":\n                left = left * right\n            else:\n                left = left / right\n        return left\n\n    def factor(self):\n        tok = self.take()\n        if tok == \"-\":\n            return -self.factor()\n        elif tok == \"(\":\n            value = self.expr()\n            self.take()  # consume ')'\n            return value\n        else:\n            return int(tok)\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        try:\n            parser = Parser(tokenize(line))\n            value = parser.expr()\n            if isinstance(value, Fraction):\n                print(f\"{value.numerator}/{value.denominator}\")\n            else:\n                print(value)\n        except ZeroDivisionError:\n            print(\"ERROR\")\n        except:\n            print(\"ERROR\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 485,
+    "prompt_tokens": 971,
+    "prompt_tokens_details": {
+      "cached_tokens": 960,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1456
+  }
+}

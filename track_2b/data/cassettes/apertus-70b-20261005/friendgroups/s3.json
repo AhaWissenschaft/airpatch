@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3667,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "3e4557f17459f72501d4a94414037c782b277be7e63c96dd2008aaee8627ab8a",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "friendgroups",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    group_of = {}\n    groups = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        names = line.split()\n        if len(names) == 1:\n            name = names[0]\n            if name not in group_of:\n                group_of[name] = len(groups)\n                groups.append(set())\n                groups[-1].add(name)\n        else:\n            first, last = names[0], names[-1]\n            if first in group_of:\n                g = group_of[first]\n            elif last in group_of:\n                g = group_of[last]\n            else:\n                g = len(groups)\n                groups.append(set())\n            for name in names:\n                group_of[name] = g\n                groups[g].add(name)\n    groups.sort(key=lambda s: (-len(s), min(s)))\n    for group in groups:\n        print(\" \".join(sorted(group)))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 224,
+    "prompt_tokens": 608,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 832
+  }
+}

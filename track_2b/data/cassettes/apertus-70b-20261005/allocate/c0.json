@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 8454,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "b643a8f8bcc38baf5ce6eb2f7ac67cf90c38890c33c229846cbaf6437cc5205b",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "allocate",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = [line.split() for line in sys.stdin if line.strip()]\n    if not lines[1:]:\n        print(\"ERROR\")\n        return\n\n    amount_line = lines[0]\n    amount = float(amount_line[0])\n\n    people = []\n    for line in lines[1:]:\n        if len(line) != 2:\n            print(\"ERROR\")\n            return\n        name, weight_str = line\n        try:\n            weight = int(weight_str)\n        except ValueError:\n            print(\"ERROR\")\n            return\n        if weight < 0:\n            print(\"ERROR\")\n            return\n        people.append((name, weight))\n\n    if not people:\n        print(\"ERROR\")\n        return\n\n    total_weight = sum(w for _, w in people)\n\n    if total_weight == 0:\n        print(\"ERROR\")\n        return\n\n    # Step 1: Compute exact shares in cents\n    A = abs(int(str(amount).replace('.', ''), 10))\n    exact_shares = [A * w / total_weight * 100 for _, w in people]\n\n    # Step 2: Round down to whole cents\n    integer_shares = [int(share) for share in exact_shares]\n\n    # Step 3: Compute fractional parts and distribute extra cents\n    fractional_parts = [share - int(share) for share in exact_shares]\n    remaining_cents = A - sum(integer_shares)\n\n    if remaining_cents == 0:\n        for name, w in people:\n            print(f\"{name} {integer_shares[people.index((name, w))] / 100:.2f}\")\n        return\n\n    # Sort people by fractional part descending, then by input order\n    sorted_people = sorted(\n        people,\n        key=lambda x: (-exact_shares[people.index(x)] % 1, people.index(x)),\n    )\n\n    extra_cents = min(remaining_cents, len(sorted_people))\n    for i in range(extra_cents):\n        name, _ = sorted_people[i]\n        integer_shares[people.index((name, _))] += 1\n\n    # Step 4: Apply sign\n    if amount < 0:\n        integer_shares = [-s for s in integer_shares]\n\n    for name, w in people:\n        print(f\"{name} {integer_shares[people.index((name, w))] / 100:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 548,
+    "prompt_tokens": 703,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1251
+  }
+}

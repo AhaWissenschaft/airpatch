@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 7269,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "3c88687b820a8b17197a5e14565ea710ad3b166890c372e565104f0df8dad2eb",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "table-align",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nimport re\n\n\ndef is_numeric_cell(cell):\n    if not cell:\n        return False\n    stripped = cell.strip()\n    return re.fullmatch(r\"^-?\\d+(\\.\\d+)?$\", stripped) is not None\n\n\ndef main():\n    rows = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        cells = [cell.strip() for cell in line.split(\"|\")]\n        rows.append(cells)\n\n    if not rows:\n        return\n\n    # Determine column widths\n    num_columns = len(rows[0]) if rows else 0\n    widths = [0] * num_columns\n\n    # Compute max width for each column\n    for row in rows:\n        for i in range(num_columns):\n            if i >= len(row):\n                row.append(\"\")\n            cell = row[i].strip()\n            widths[i] = max(widths[i], len(cell))\n\n    # Ensure minimum width of 1\n    for i in range(num_columns):\n        widths[i] = max(widths[i], 1)\n\n    # Determine if each column is numeric\n    is_numeric = [False] * num_columns\n    for col_idx in range(num_columns):\n        numeric = False\n        for row_idx in range(len(rows)):\n            cell = rows[row_idx][col_idx].strip()\n            if cell and is_numeric_cell(cell):\n                numeric = True\n                break\n        is_numeric[col_idx] = numeric\n\n    # Format each row\n    def fmt(row):\n        cells = []\n        for i, cell in enumerate(row):\n            cell = cell.strip()\n            width = widths[i]\n            if is_numeric[i] and cell:\n                padding = \" \" * (width - len(cell))\n                cells.append(cell + padding)\n            else:\n                padding = \" \" * (width - len(cell))\n                cells.append(padding + cell)\n        return \" | \".join(cells)\n\n    # Print header\n    header_row = rows[0]\n    print(fmt(header_row))\n\n    # Print separator\n    print(\"-+-\".join(\"-\" * w for w in widths))\n\n    # Print data rows\n    for row in rows[1:]:\n        print(fmt(row))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 483,
+    "prompt_tokens": 787,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1270
+  }
+}

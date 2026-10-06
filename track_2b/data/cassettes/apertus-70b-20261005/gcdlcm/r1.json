@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2896,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "c0",
+  "prompt_sha256": "a94e056794053b61a0c44d9e1ac51f5e76f20a579cd08b258ac751525f844467",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "gcdlcm",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\n\ndef lcm(a, b):\n    return a * b // gcd(a, b)\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        nums = [int(x) for x in line.split()]\n        if not nums:\n            continue\n        g = abs(nums[0])\n        l = abs(nums[0])\n        for n in nums[1:]:\n            g = gcd(g, abs(n))\n            l = l * abs(n) // gcd(l, abs(n))\n        print(g, l)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 172,
+    "prompt_tokens": 764,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 936
+  }
+}

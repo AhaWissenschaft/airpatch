@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4168,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "a63361c2be50b71be82ec322424a431f587cd930b4e751244ca7c0d937b870e3",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "shift-hours",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            continue\n        name, start_time, end_time = parts\n        start = minutes(start_time)\n        end = minutes(end_time)\n        if end <= start:\n            worked = 0\n        else:\n            worked = end - start\n        if worked > 6 * 60:\n            if worked > 9 * 60:\n                worked -= 45\n            else:\n                worked -= 30\n        if name not in totals:\n            totals[name] = worked\n        else:\n            totals[name] += worked\n\n    sorted_names = sorted(totals.keys())\n    for name in sorted_names:\n        total_minutes = totals[name]\n        hours = total_minutes // 60\n        minutes = total_minutes % 60\n        print(f\"{name} {hours:02d}:{minutes:02d}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 276,
+    "prompt_tokens": 755,
+    "prompt_tokens_details": {
+      "cached_tokens": 736,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1031
+  }
+}

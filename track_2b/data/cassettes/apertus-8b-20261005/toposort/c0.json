@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1252,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "bd71045bab2321c06071b50bb9e605206d2b4905bb25b4719ea1411b1a6556b7",
+  "recorded_at": "20261005T082204Z-8b",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "toposort",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    deps = {}\n    for line in sys.stdin:\n        if not line.strip():\n            continue\n        name, _, rest = line.partition(\":\")\n        deps.setdefault(name.strip(), []).extend(rest.split())\n    done = set()\n    order = []\n\n    def visit(task):\n        if task in done:\n            return\n        done.add(task)\n        for d in sorted(deps.get(task, [])):\n            visit(d)\n        order.append(task)\n\n    for task in sorted(deps):\n        visit(task)\n    remaining = sorted([t for t in deps if t not in done])\n    if remaining:\n        print(\"CYCLE: \" + \" \".join(remaining))\n    else:\n        for task in order:\n            print(task)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 184,
+    "prompt_tokens": 602,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 786
+  }
+}

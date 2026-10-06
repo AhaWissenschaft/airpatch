@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6272,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "c0",
+  "prompt_sha256": "da761cb1c44db6c3df22820c86b9e95ed516d8ad0206dad27e51c4d5239b45ec",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "swiss-dates",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\nfrom datetime import date\n\nSWISS = re.compile(r\"([0-9]{1,2})\\.([0-9]{1,2})\\.([0-9]{4})\")\nISO = re.compile(r\"([0-9]{4})-([0-9]{2})-([0-9]{2})\")\n\ndef is_leap(year):\n    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)\n\ndef plausible(y, m, d):\n    if y == 0:\n        return False\n    if m < 1 or m > 12:\n        return False\n    if d < 1:\n        return False\n    if m == 2:\n        if d > 29:\n            return False\n        if d == 29 and not is_leap(y):\n            return False\n    elif m in [4, 6, 9, 11]:\n        if d > 30:\n            return False\n    return True\n\ndef convert(text):\n    m = SWISS.fullmatch(text)\n    if m:\n        d, mo, y = map(int, m.groups())\n        if plausible(y, mo, d):\n            return f\"{y:04d}-{mo:02d}-{d:02d}\"\n        return \"invalid\"\n    m = ISO.fullmatch(text)\n    if m:\n        y, mo, d = map(int, m.groups())\n        if plausible(y, mo, d):\n            return f\"{d:02d}.{mo:02d}.{y:04d}\"\n        return \"invalid\"\n    return \"invalid\"\n\ndef main():\n    for line in sys.stdin:\n        text = line.strip()\n        if text:\n            print(convert(text))\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 414,
+    "prompt_tokens": 1308,
+    "prompt_tokens_details": {
+      "cached_tokens": 1216,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1722
+  }
+}

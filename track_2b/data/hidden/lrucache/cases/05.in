@@ -1,0 +1,9 @@
+3
+put x 1
+put y 2
+put z 3
+get x
+get y
+put w 4
+put v 5
+dump

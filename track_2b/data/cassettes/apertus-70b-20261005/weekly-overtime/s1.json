@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 9449,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "638bf28736e9d68d81a7af103a835c06e836211beb5cb39a55ab2c1aa1c0c38c",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "weekly-overtime",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime, timedelta\n\n\ndef minutes(time_str):\n    h, m = map(int, time_str.split(\":\"))\n    return h * 60 + m\n\n\ndef hm(total_minutes):\n    hours = total_minutes // 60\n    minutes = total_minutes % 60\n    return f\"{hours}:{minutes:02d}\"\n\n\ndef iso_week(year, month, day):\n    date = datetime(year, month, day)\n    # ISO week starts on Monday\n    jan1 = datetime(date.year, 1, 1)\n    delta = (date - jan1).days\n    # Find first Thursday\n    thursday = jan1 + timedelta(days=delta - (jan1.weekday() + 1) % 7)\n    # Week number starts with the week containing this Thursday\n    return thursday.isocalendar()[1]\n\n\ndef parse_shift(line):\n    parts = line.split()\n    name = parts[0]\n    date_str = parts[1]\n    start_str = parts[2]\n    end_str = parts[3]\n    year, month, day = map(int, date_str.split(\"-\"))\n    week = iso_week(year, month, day)\n    start_min = minutes(start_str)\n    end_min = minutes(end_str)\n    # Shift crosses midnight: end is earlier than start\n    if end_min < start_min:\n        end_min += 1440  # 24*60\n    return (name, week, end_min - start_min)\n\n\ndef main():\n    target = {}\n    weeks = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if parts[0] == \"target\":\n            name = parts[1]\n            target_time = parts[2]\n            target[name] = minutes(target_time)\n        else:\n            shift = parse_shift(line)\n            name, week, duration = shift\n            weeks[(name, week)] = weeks.get((name, week), 0) + duration\n    # Sort employees alphabetically\n    employee_names = sorted(target.keys())\n    for name in employee_names:\n        if name not in target:\n            continue\n        total_overtime = timedelta(0)\n        for (emp, week), worked in sorted(weeks.items()):\n            if emp == name:\n                target_min = target[name]\n                diff = worked - target_min\n                sign = \"+\" if diff >= 0 else \"-\"\n                print(\n                    f\"{name} {week} {hm(worked)} {sign}{hm(abs(diff))}\"\n                )\n                total_overtime += timedelta(minutes=abs(diff))\n        if total_overtime > timedelta(0):\n            print(f\"{name} overtime {hm(total_overtime.total_seconds() // 60)}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 624,
+    "prompt_tokens": 1352,
+    "prompt_tokens_details": {
+      "cached_tokens": 1344,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1976
+  }
+}

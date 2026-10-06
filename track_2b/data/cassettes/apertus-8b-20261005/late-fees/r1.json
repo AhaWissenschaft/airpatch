@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2562,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "c0",
+  "prompt_sha256": "2524af26912992d4814ea071ec7245540f22c5597ae6bcd013bbb7d5fc3e7d30",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "late-fees",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta\n\nRATE = {\"book\": 0.5, \"dvd\": 1.0, \"magazine\": 0.2}\n\n\ndef parse(text):\n    y, m, d = map(int, text.split(\"-\"))\n    return date(y, m, d)\n\n\ndef adjust_due(due_date):\n    \"\"\"Adjust due date to the next Monday if it's a Sunday.\"\"\"\n    if due_date.weekday() == 6:  # 6 is Sunday\n        return due_date + timedelta(days=1)\n    return due_date\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    asof_date = parse(lines[0].split(\" \")[1])\n    totals = {}\n    for line in lines[1:]:\n        if not line.strip():\n            continue\n        member, kind, due_text, returned = line.split()\n        due_date = parse(due_text)\n        adjusted_due = adjust_due(due_date)\n        if returned == \"-\":\n            return_date = asof_date\n        else:\n            return_date = parse(returned)\n        late_days = (return_date - adjusted_due).days\n        if late_days <= 0:\n            continue\n        fee = max(late_days - 3, 0) * RATE[kind]\n        totals[member] = totals.get(member, 0) + fee\n    for member in sorted(totals):\n        print(f\"{member} {totals[member]:.2f}\")\n    print(f\"total {sum(totals.values()):.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 362,
+    "prompt_tokens": 1552,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1914
+  }
+}

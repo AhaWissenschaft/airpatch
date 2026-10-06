@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 8842,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "638bf28736e9d68d81a7af103a835c06e836211beb5cb39a55ab2c1aa1c0c38c",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "weekly-overtime",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime, timedelta\nfrom typing import Dict, Tuple\n\n\ndef minutes(text: str) -> int:\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef hm(total_minutes: int) -> str:\n    hours = total_minutes // 60\n    minutes = total_minutes % 60\n    return f\"{hours}:{minutes:02d}\"\n\n\ndef get_week_number(date_str: str) -> Tuple[int, int]:\n    d = datetime.strptime(date_str, \"%Y-%m-%d\")\n    iso_week = d.isocalendar()\n    return iso_week[0], iso_week[1]\n\n\ndef main():\n    target: Dict[str, int] = {}\n    weeks: Dict[Tuple[str, str], int] = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if parts[0] == \"target\":\n            name = parts[1]\n            target_hm = parts[2]\n            target[name] = minutes(target_hm)\n            continue\n        if len(parts) != 4:\n            continue\n        name, date_str, start_hm, end_hm = parts\n        start_min = minutes(start_hm)\n        end_min = minutes(end_hm)\n        if end_min < start_min:\n            end_min += 1440  # add 24 hours if end is before start\n        week_year, week_number = get_week_number(date_str)\n        week_key = f\"{week_year}-W{week_number:02d}\"\n        key = (name, week_key)\n        weeks[key] = weeks.get(key, 0) + end_min - start_min\n    # Sort employees by name (case-insensitive), then print weeks and overtime\n    employee_balance: Dict[str, timedelta] = {}\n    for (name, week_key), worked_min in sorted(weeks.items(), key=lambda x: x[0]):\n        target_min = target.get(name, 40 * 60)\n        difference_min = worked_min - target_min\n        sign = \"+\" if difference_min >= 0 else \"-\"\n        print(\n            f\"{name} {week_key} {hm(worked_min)} {sign}{hm(abs(difference_min))}\"\n        )\n        employee_balance[name] = employee_balance.get(name, timedelta()) + timedelta(minutes=difference_min)\n    # Print overtime summary for each employee\n    for name in sorted(employee_balance.keys()):\n        overtime_min = max(employee_balance[name].total_seconds(), 0)\n        print(f\"{name} overtime {hm(int(overtime_min))}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 598,
+    "prompt_tokens": 1352,
+    "prompt_tokens_details": {
+      "cached_tokens": 1344,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1950
+  }
+}

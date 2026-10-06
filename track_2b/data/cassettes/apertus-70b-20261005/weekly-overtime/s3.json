@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 12730,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "638bf28736e9d68d81a7af103a835c06e836211beb5cb39a55ab2c1aa1c0c38c",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "weekly-overtime",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime, timedelta\nfrom collections import defaultdict\nfrom typing import Dict\n\ndef minutes(text: str) -> int:\n    \"\"\"Convert time string HH:MM to minutes\"\"\"\n    h, m = map(int, text.split(':'))\n    return h * 60 + m\n\ndef hm(total_minutes: int) -> str:\n    \"\"\"Convert total minutes to H:MM string\"\"\"\n    h = total_minutes // 60\n    m = total_minutes % 60\n    return f\"{h}:{m:02d}\"\n\ndef determine_week(year: int, week: int) -> str:\n    \"\"\"Return the ISO week string YYYY-Www\"\"\"\n    return f\"{year}-W{week:02d}\"\n\ndef parse_line(line: str) -> tuple[str, ...]:\n    \"\"\"Parse a shift line or skip invalid lines\"\"\"\n    parts = line.strip().split()\n    if len(parts) != 4:\n        return None\n    name, date_str, start_str, end_str = parts\n    try:\n        start = datetime.strptime(f\"{date_str} {start_str}\", \"%Y-%m-%d %H:%M\")\n        end = datetime.strptime(f\"{date_str} {end_str}\", \"%Y-%m-%d %H:%M\")\n    except Exception:\n        return None\n    return name, date_str, start_str, end_str\n\ndef main():\n    target: Dict[str, int] = {}\n    employee_shifts: Dict[(str, str), int] = defaultdict(int)\n    target_default = 40 * 60  # Default target is 40:00 in minutes\n\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if parts[0] == \"target\":\n            if len(parts) != 3:\n                continue\n            name = parts[1]\n            try:\n                target_time = minutes(parts[2])\n                target[name] = target_time\n            except Exception:\n                continue\n        else:\n            parsed = parse_line(line)\n            if parsed is None:\n                continue\n            name, date_str, start_str, end_str = parsed\n\n            # Parse dates and times\n            date = datetime.strptime(date_str, \"%Y-%m-%d\")\n            start = datetime.strptime(f\"{date_str} {start_str}\", \"%Y-%m-%d %H:%M\")\n            end = datetime.strptime(f\"{date_str} {end_str}\", \"%Y-%m-%d %H:%M\")\n\n            # Check if end is before start (crosses midnight)\n            if end < start:\n                end = end + timedelta(days=1)\n\n            # Compute shift duration in minutes\n            shift_minutes = (end - start).total_seconds() / 60\n\n            # Determine the week of the shift (week of start date)\n            iso_year = date.isocalendar()[0]\n            iso_week = date.isocalendar()[1]\n            week_key = determine_week(iso_year, iso_week)\n\n            # Store shift time for employee and week\n            employee_shifts[(name, week_key)] += shift_minutes\n\n    # Calculate results\n    balance: Dict[str, int] = defaultdict(int)\n    for (name, week), worked_minutes in employee_shifts.items():\n        target_time = target.get(name, target_default)\n\n        # Compute difference\n        diff = worked_minutes - target_time\n        sign = \"+\" if diff >= 0 else \"-\"\n        print(f\"{name} {week} {hm(worked_minutes)} {sign}{hm(abs(diff))}\")\n\n        # Accumulate overtime balance\n        balance[name] += diff\n\n    # Print overtime summary\n    for name in sorted(balance.keys()):\n        overtime = max(balance[name], 0)\n        print(f\"{name} overtime {hm(overtime)}\")\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 857,
+    "prompt_tokens": 1352,
+    "prompt_tokens_details": {
+      "cached_tokens": 1344,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2209
+  }
+}

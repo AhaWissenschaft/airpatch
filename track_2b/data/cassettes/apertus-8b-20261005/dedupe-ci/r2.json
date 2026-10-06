@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 619,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "a05714f5d5cbb4483cde90b27dd0e88a86c77712341c493fa028de81ab531713",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "dedupe-ci",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    seen = set()\n    for line in sys.stdin:\n        key = line.rstrip('\\t').strip().lower()\n        if key not in seen:\n            seen.add(key)\n            print(line.rstrip('\\t').rstrip())\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 77,
+    "prompt_tokens": 627,
+    "prompt_tokens_details": {
+      "cached_tokens": 448,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 704
+  }
+}

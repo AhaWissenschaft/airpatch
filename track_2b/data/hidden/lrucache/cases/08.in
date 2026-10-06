@@ -1,0 +1,50 @@
+3
+get k0
+put k3 v1
+put k6 v2
+get k1
+put k5 v4
+put k1 v5
+get k2
+put k0 v7
+put k3 v8
+get k3
+dump
+put k2 v10
+put k5 v11
+get k4
+put k4 v13
+put k0 v14
+get k5
+put k6 v16
+put k2 v17
+get k6
+put k1 v19
+dump
+put k4 v20
+get k0
+put k3 v22
+put k6 v23
+get k1
+put k5 v25
+put k1 v26
+get k2
+put k0 v28
+put k3 v29
+dump
+get k3
+put k2 v31
+put k5 v32
+get k4
+put k4 v34
+put k0 v35
+get k5
+put k6 v37
+put k2 v38
+get k6
+dump
+put k1 v40
+put k4 v41
+get k0
+put k3 v43
+put k6 v44

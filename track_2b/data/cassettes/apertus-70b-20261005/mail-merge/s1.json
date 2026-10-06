@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4503,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "354d59583897e542af4d8e2334bdec24d2b8671eaecc774072537a84d2253450",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "mail-merge",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    home = lines[0].split(\"=\")[1].strip()\n\n    for raw in lines[1:]:\n        raw = raw.strip()\n        if not raw:\n            continue\n        parts = raw.split(\";\")\n        title, first, last, street, postcode, city, country = (\n            parts[:7] + [\"\"] * (7 - len(parts))\n        )\n\n        # Process name line\n        name_parts = [part.strip() for part in [title, first, last] if part.strip()]\n        if not name_parts:\n            name_line = \"To the occupant\"\n        else:\n            name_line = \" \".join(name_parts)\n\n        # Print name line\n        print(name_line)\n\n        # Print street if not empty\n        if street.strip():\n            print(street)\n\n        # Process postcode and city\n        pc = postcode.strip()\n        cy = city.strip()\n        if pc or cy:\n            print(f\"{pc} {cy}\")\n\n        # Print country if not empty and not home country\n        c = country.strip()\n        if c and c.upper() != home.upper():\n            print(c.upper())\n\n        # Separator between labels\n        if raw != lines[-1].strip():\n            print(\"---\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 299,
+    "prompt_tokens": 828,
+    "prompt_tokens_details": {
+      "cached_tokens": 800,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1127
+  }
+}

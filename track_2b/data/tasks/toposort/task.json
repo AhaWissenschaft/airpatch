@@ -1,0 +1,14 @@
+{
+ "id": "toposort",
+ "kind": "benchmark",
+ "title": "Work order with dependencies",
+ "tier": "T2",
+ "split": "test",
+ "entry": "main.py",
+ "editable": [
+  "main.py"
+ ],
+ "time_limit_s": 5,
+ "mem_limit_mb": 128,
+ "compare": "lines"
+}

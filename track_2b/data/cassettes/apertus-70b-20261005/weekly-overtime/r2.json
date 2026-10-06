@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 8344,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "r1",
+  "prompt_sha256": "a75d255e95e06cad8aea602fcf70efeacb941bd1ea0d8d7103856a28625dcbaf",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "weekly-overtime",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime, timedelta\nfrom collections import defaultdict\n\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef hm(total_minutes):\n    hours = total_minutes // 60\n    minutes = total_minutes % 60\n    return f\"{hours}:{minutes:02d}\"\n\n\ndef main():\n    target = {}\n    weeks = defaultdict(int)\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if parts[0] == \"target\":\n            name = parts[1]\n            target_time = minutes(parts[2])\n            target[name] = target_time\n            continue\n        if len(parts) != 4:\n            continue\n        name, date_str, start_str, end_str = parts\n        try:\n            date = datetime.strptime(date_str, \"%Y-%m-%d\")\n        except ValueError:\n            continue\n        try:\n            start = datetime.strptime(start_str, \"%H:%M\").time()\n            end = datetime.strptime(end_str, \"%H:%M\").time()\n        except ValueError:\n            continue\n        # Compute shift duration\n        start_dt = datetime.combine(date, start)\n        end_dt = datetime.combine(date, end)\n        if end_dt < start_dt:\n            end_dt += timedelta(days=1)\n        duration = (end_dt - start_dt).total_seconds() / 60\n        week = date.isocalendar()[1]  # ISO week number\n        year = date.isocalendar()[0]\n        week_str = f\"{year}-W{week:02d}\"\n        weeks[(name, week_str)] += duration\n\n    # Compute results\n    balance = defaultdict(timedelta)\n    for (name, week_str), worked in sorted(weeks.items()):\n        target_time = target.get(name, 40 * 60)\n        diff = worked - target_time\n        sign = \"+\" if diff >= 0 else \"-\"\n        print(f\"{name} {week_str} {hm(worked)} {sign}{hm(abs(diff))}\")\n        balance[name] += diff\n\n    # Print overtime summary\n    for name in sorted(balance):\n        total_overtime = balance[name]\n        if total_overtime > timedelta(0):\n            print(f\"{name} overtime {hm(total_overtime)}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 547,
+    "prompt_tokens": 2428,
+    "prompt_tokens_details": {
+      "cached_tokens": 1376,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2975
+  }
+}

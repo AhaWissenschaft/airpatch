@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5852,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "3c88687b820a8b17197a5e14565ea710ad3b166890c372e565104f0df8dad2eb",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "table-align",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    rows = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        cells = [cell.strip() for cell in line.split(\"|\")]\n        rows.append(cells)\n\n    if not rows:\n        return\n\n    # Determine column widths\n    widths = [max(len(cell) for cell in column) for column in zip(*rows)]\n\n    # Determine if columns are numeric\n    is_numeric = []\n    for i in range(len(widths)):\n        numeric = False\n        for row in rows[1:]:  # Skip header row\n            cell = row[i]\n            if cell:\n                # Check if cell is a number\n                if cell.replace('.', '', 1).replace('-', '', 1).isdigit():\n                    numeric = True\n                    break\n        is_numeric.append(numeric)\n\n    # Format and print header\n    header_row = rows[0]\n    formatted_header = []\n    for cell, width, num_col in zip(header_row, widths, is_numeric):\n        if num_col:\n            formatted_header.append(cell.rjust(width))\n        else:\n            formatted_header.append(cell.ljust(width))\n    print(\" | \".join(formatted_header))\n\n    # Print separator line\n    print(\"-+-\".join(\"-\" * w for w in widths))\n\n    # Format and print data rows\n    for row in rows[1:]:\n        formatted_row = []\n        for cell, width, num_col in zip(row, widths, is_numeric):\n            if num_col:\n                formatted_row.append(cell.rjust(width))\n            else:\n                formatted_row.append(cell.ljust(width))\n        print(\" | \".join(formatted_row))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 374,
+    "prompt_tokens": 787,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1161
+  }
+}

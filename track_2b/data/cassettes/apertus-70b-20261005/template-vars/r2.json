@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3229,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "r1",
+  "prompt_sha256": "9bba64af1dba5f62373aa47877070f53a3d83214354132a73c27587e82a60026",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "template-vars",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    if \"---\" not in text:\n        sys.stdout.write(text)\n        return\n\n    head, _, body = text.partition(\"---\\n\")\n    variables = {}\n    for line in head.splitlines():\n        line = line.strip()\n        if not line or line.startswith(\"#\"):\n            continue\n        if \"=\" not in line:\n            continue\n        name, value = line.split(\"=\", 1)\n        name = name.strip()\n        value = value.strip()\n        variables[name] = value\n\n    result = body\n    for name, value in variables.items():\n        placeholder = \"{{\" + name + \"}}\"\n        result = result.replace(placeholder, value)\n\n    result = result.replace(\"{{\", \"{\").replace(\"}}\", \"}\")\n    sys.stdout.write(result)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 195,
+    "prompt_tokens": 1032,
+    "prompt_tokens_details": {
+      "cached_tokens": 1024,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1227
+  }
+}

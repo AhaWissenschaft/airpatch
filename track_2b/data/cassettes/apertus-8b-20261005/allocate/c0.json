@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2494,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "b643a8f8bcc38baf5ce6eb2f7ac67cf90c38890c33c229846cbaf6437cc5205b",
+  "recorded_at": "20261005T082204Z-8b",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "allocate",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = [line.strip() for line in sys.stdin if line.strip()]\n    amount_str = lines[0]\n    amount = float(amount_str) if amount_str[0] != '-' else -float(amount_str[1:])\n    people = []\n    for line in lines[1:]:\n        name, weight_str = line.split(' ', 1)\n        weight = int(weight_str)\n        people.append((name, weight))\n\n    if not people:\n        print(\"ERROR\")\n        return\n\n    total_weight = sum(w for _, w in people)\n    if total_weight == 0:\n        print(\"ERROR\")\n        return\n\n    shares = []\n    for name, w in people:\n        exact_share = amount * w / total_weight\n        shares.append((name, exact_share))\n\n    # Step 2: round down to whole cents\n    whole_shares = [round(exact_share, 2) for name, exact_share in shares]\n\n    remaining = amount\n    for _ in range(len(people)):\n        if remaining == 0:\n            break\n        # Step 3: distribute remaining cents\n        max_frac = -1.0\n        selected = None\n        for i, (name, exact_share) in enumerate(shares):\n            frac = exact_share - whole_shares[i]\n            if frac > max_frac:\n                max_frac = frac\n                selected = i\n        if selected is not None:\n            remaining -= 1\n            whole_shares[selected] += 1\n\n    if remaining != 0:\n        print(\"ERROR\")\n        return\n\n    # Output\n    for name, share in whole_shares:\n        print(f\"{name} {share:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 392,
+    "prompt_tokens": 703,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1095
+  }
+}

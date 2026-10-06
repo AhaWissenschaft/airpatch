@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2898,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "2c4b0cdc7db8768436d34ede662d20dc975d6651e7ab2d9dbb6291a1db29cf82",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "parking-fees",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\ndef calculate_fee(duration):\n    if duration <= 30:\n        return 0.0\n    blocks = duration // 60 + 1\n    base_price = min(blocks * 2.5, 18.0)\n    return base_price\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) < 4:\n            print(f\"{parts[0]} invalid\")\n            continue\n        plate = parts[0]\n        entry_date = parts[1]\n        entry_time = parts[2]\n        exit_date = parts[3]\n        exit_time = parts[4]\n        entry_dt = datetime.strptime(f\"{entry_date} {entry_time}\", \"%Y-%m-%d %H:%M\")\n        exit_dt = datetime.strptime(f\"{exit_date} {exit_time}\", \"%Y-%m-%d %H:%M\")\n        if exit_dt < entry_dt:\n            print(f\"{plate} invalid\")\n            continue\n        duration_minutes = (exit_dt - entry_dt).total_seconds() // 60\n        if duration_minutes == 0:\n            print(f\"{plate} 0:00 0.00\")\n        else:\n            fee = calculate_fee(duration_minutes)\n            hours = duration_minutes // 60\n            minutes = duration_minutes % 60\n            formatted_duration = f\"{hours}:{minutes:02d}\"\n            print(f\"{plate} {formatted_duration} {fee:.2f}\")\n            totals[plate] = totals.get(plate, 0) + fee\n    print(\"---\")\n    for plate in sorted(totals, key=lambda x: (-totals[x], x)):\n        print(f\"{plate} {totals[plate]:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 456,
+    "prompt_tokens": 1288,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1744
+  }
+}

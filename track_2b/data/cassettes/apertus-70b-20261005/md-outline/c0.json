@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4684,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "225410594accf1585176b906e023d128cefa93d773d87ed7057821032033e1e3",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "md-outline",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    counters = [0] * 6\n    slugs = {}\n    for line in sys.stdin:\n        line = line.rstrip(\"\\n\")\n        if not line.startswith(\"#\"):\n            continue\n        level = len(line) - len(line.lstrip(\"#\"))\n        if level > 6:\n            continue\n        text = line[level:].strip()\n        if not text:\n            continue\n        # Remove trailing hashes and spaces\n        while text.endswith(\"# \") or text.endswith(\"#\"):\n            text = text[:-1].rstrip()\n        while text.startswith(\" \"):\n            text = text[1:]\n        while text.endswith(\" \"):\n            text = text[:-1]\n\n        counters[level - 1] += 1\n        for i in range(level, 6):\n            counters[i] = 0\n        number = \".\".join(str(c) for c in counters[:level])\n\n        slug = text.lower().replace(\" \", \"-\")\n        suffix = 1\n        while slug in slugs:\n            slug = f\"{slug}-{suffix}\"\n            suffix += 1\n        slugs[slug] = True\n\n        print(\"  \" * (level - 1) + f\"{number} {text} (#{slug})\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 292,
+    "prompt_tokens": 935,
+    "prompt_tokens_details": {
+      "cached_tokens": 928,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1227
+  }
+}

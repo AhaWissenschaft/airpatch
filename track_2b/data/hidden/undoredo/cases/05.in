@@ -1,0 +1,7 @@
+type one
+undo
+type two
+redo
+print
+undo
+print

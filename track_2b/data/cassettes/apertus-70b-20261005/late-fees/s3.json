@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6681,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "56d3af12cefe175b67bc3549bb93055c4400a0b15bfa0a6760b3a6cb0011d537",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "late-fees",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta\n\nRATE = {\"book\": 0.5, \"dvd\": 1.0, \"magazine\": 0.2}\n\ndef parse(text):\n    y, m, d = map(int, text.split(\"-\"))\n    return date(y, m, d)\n\ndef adjust_due_date(due_date):\n    due = parse(due_date)\n    if due.weekday() == 6:  # Sunday is 6\n        due += timedelta(days=1)\n    return due\n\ndef compute_late_days(due_date, return_date=None, asof_date=None):\n    due = adjust_due_date(due_date)\n    if return_date:\n        return (parse(return_date) - due).days\n    if asof_date:\n        return (parse(asof_date) - due).days\n    return 0\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    if not lines:\n        return\n    asof_line = lines[0]\n    asof_date = parse(asof_line.split()[1])\n    totals = {}\n    for line in lines[1:]:\n        if not line.strip():\n            continue\n        member, kind, due_date_str, returned = line.split()\n        if returned == \"-\":\n            return_date = None\n        else:\n            return_date = returned\n        late_days = compute_late_days(due_date_str, return_date, asof_date)\n        if late_days > 0:\n            fee = max(0, late_days - 3) * RATE[kind]\n            fee = min(fee, 10.00)\n            totals[member] = totals.get(member, 0.0) + fee\n    for member in sorted(totals.keys()):\n        print(f\"{member} {totals[member]:.2f}\")\n    print(f\"total {sum(totals.values()):.2f}\")\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 430,
+    "prompt_tokens": 934,
+    "prompt_tokens_details": {
+      "cached_tokens": 928,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1364
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5990,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "c0",
+  "prompt_sha256": "efa94254b0ce69dcfce040b23d19717f34258c8808bea3a1d74921a556fa4b03",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "late-fees",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta\n\nRATE = {\"book\": 0.5, \"dvd\": 1.0, \"magazine\": 0.2}\n\n\ndef parse(text):\n    y, m, d = map(int, text.split(\"-\"))\n    return date(y, m, d)\n\n\ndef adjust_due_date(due_date_str):\n    due_date = parse(due_date_str)\n    if due_date.weekday() == 6:  # Sunday\n        due_date += timedelta(days=1)\n    return due_date\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    totals = {}\n    asof_date = parse(lines[0].split()[1])\n\n    for line in lines[1:]:\n        if not line.strip():\n            continue\n        member, kind, due_str, returned_str = line.split()\n        due_date = adjust_due_date(due_str)\n        returned_date = parse(returned_str) if returned_str != \"-\" else None\n\n        if returned_date is None:\n            return_date = asof_date\n        else:\n            return_date = returned_date\n\n        days_late = (return_date - due_date).days\n        if days_late <= 0:\n            continue\n\n        fee = max(0, days_late - 3) * RATE[kind]\n        fee = min(fee, 10.00)\n\n        totals[member] = totals.get(member, 0.0) + fee\n\n    for member in sorted(totals):\n        print(f\"{member} {totals[member]:.2f}\")\n    print(f\"total {sum(totals.values()):.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 379,
+    "prompt_tokens": 1709,
+    "prompt_tokens_details": {
+      "cached_tokens": 1312,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2088
+  }
+}

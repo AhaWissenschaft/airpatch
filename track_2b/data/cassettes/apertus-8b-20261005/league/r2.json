@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2540,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "8bce77a0ad57d9fca4f74a9fc87fc3bb3a9427d5d42226738eaa1e945bf40178",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "league",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    table = {}\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if not parts:\n            continue\n        home, away, score = parts\n        hg, ag = map(int, score.split(\"-\"))\n        for team in (home, away):\n            table.setdefault(team, {\"p\": 0, \"w\": 0, \"d\": 0, \"l\": 0, \"gf\": 0, \"ga\": 0})\n        table[home][\"p\"] += 1\n        table[away][\"p\"] += 1\n        table[home][\"gf\"] += hg\n        table[home][\"ga\"] += ag\n        table[away][\"gf\"] += ag\n        table[away][\"ga\"] += hg\n        if hg > ag:\n            table[home][\"w\"] += 1\n            table[away][\"l\"] += 1\n        elif hg < ag:\n            table[away][\"w\"] += 1\n            table[home][\"l\"] += 1\n        else:\n            table[home][\"d\"] += 1\n            table[away][\"d\"] += 1\n\n    def points(t):\n        return 3 * t[\"w\"] + t[\"d\"]\n\n    order = sorted(table, key=lambda name: (-points(table[name]), name, table[name][\"gf\"], name))\n    for rank, name in enumerate(order, 1):\n        t = table[name]\n        print(f\"{rank} {name} {t['p']} {t['w']} {t['d']} {t['l']} {t['gf']}:{t['ga']} {points(t)}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 392,
+    "prompt_tokens": 1553,
+    "prompt_tokens_details": {
+      "cached_tokens": 1536,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1945
+  }
+}

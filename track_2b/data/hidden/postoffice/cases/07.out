@@ -1,0 +1,31 @@
+c00 1 0 2
+c27 2 1 3
+c17 1 2 6
+c07 2 3 9
+c24 3 5 13
+c14 1 6 16
+c04 2 9 12
+c21 left
+c11 2 12 19
+c01 3 13 22
+c28 1 16 25
+c18 left
+c08 left
+c25 2 19 25
+c15 left
+c05 left
+c22 3 22 25
+c12 1 25 30
+c02 left
+c29 left
+c19 2 25 34
+c09 3 25 27
+c26 3 27 31
+c16 left
+c06 1 30 38
+c23 3 31 41
+c13 left
+c03 2 34 39
+c20 1 38 45
+c10 left
+served 20 left 10 max wait 4

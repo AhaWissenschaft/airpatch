@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2319,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "6075963a7a8768ee43e3daf91c9b976d1a21542177376163d7034f1214bf53e0",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "deccalc",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom decimal import Decimal\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            continue\n        a, op, b = parts[0], parts[1], parts[2]\n        try:\n            a = Decimal(a)\n            b = Decimal(b)\n        except:\n            print(\"ERROR\")\n            continue\n        if op == \"+\":\n            result = a + b\n        elif op == \"-\":\n            result = a - b\n        elif op == \"*\":\n            result = a * b\n        elif op == \"/\":\n            if b == 0:\n                print(\"ERROR\")\n            else:\n                result = round(a / b, 10)\n        else:\n            print(\"ERROR\")\n            continue\n        if result == 0:\n            print(\"0\")\n        elif result % 1 == 0:\n            print(int(result))\n        else:\n            s = str(result)\n            if \".\" in s:\n                integer_part, fractional_part = s.split(\".\")\n            else:\n                integer_part = s\n                fractional_part = \"\"\n            if integer_part == \"0\" and fractional_part == \"\":\n                print(integer_part)\n            elif integer_part == \"\":\n                print(fractional_part)\n            else:\n                print(f\"{integer_part}.{fractional_part}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 319,
+    "prompt_tokens": 992,
+    "prompt_tokens_details": {
+      "cached_tokens": 800,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1311
+  }
+}

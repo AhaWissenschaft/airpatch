@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2460,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "7357422e934e85936a1652e2b080d9dee51e70d1a8847ae044bfcb6d9703bbc3",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "allocate",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = [line.strip() for line in sys.stdin if line.strip()]\n    amount_str = lines[0]\n    amount = float(amount_str) if amount_str[0] != '-' else -float(amount_str)\n    people = []\n    for line in lines[1:]:\n        name, weight_str = line.split()\n        weight = int(weight_str)\n        people.append((name, weight))\n\n    if not people:\n        print(\"ERROR\")\n        return\n\n    total_weight = sum(w for _, w in people)\n    if total_weight == 0:\n        print(\"ERROR\")\n        return\n\n    shares_exact = [amount * w / total_weight for name, w in people]\n    shares_down = [round(s, 2) for s in shares_exact]\n\n    remaining = amount\n    for w in shares_exact:\n        remaining -= shares_down[people.index((name, w))]\n\n    if remaining != 0:\n        sorted_people = sorted(enumerate(people), key=lambda x: (-s for _, s in shares_exact[x[1]]), reverse=True)\n        for i, (name, _) in enumerate(sorted_people):\n            if remaining <= 0:\n                break\n            shares_down[people.index((name, _))] += 1\n            remaining -= 1\n\n    for name, w in people:\n        print(f\"{name} {shares_down[people.index((name, w))]:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 334,
+    "prompt_tokens": 703,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1037
+  }
+}

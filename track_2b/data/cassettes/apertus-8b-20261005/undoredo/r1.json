@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1534,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "c0",
+  "prompt_sha256": "c145db17d5414a4f20fa1a9af70e5ab369d85a738da263c1759052dd1f8845cf",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "undoredo",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    doc = \"\"\n    history = []\n    undone = []\n    for raw in sys.stdin:\n        line = raw.strip()\n        if not line:\n            continue\n        if line.startswith(\"type \"):\n            history.append(doc)\n            doc += line[5:]\n        elif line.startswith(\"delete \"):\n            history.append(doc)\n            n = int(line[7:])\n            doc = doc[:-n] if n > 0 else doc\n        elif line == \"undo\":\n            if history:\n                undone.append(doc)\n                doc = history.pop()\n        elif line == \"redo\":\n            if undone:\n                doc = undone.pop()\n        elif line == \"print\":\n            print(f\"[{doc}]\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 176,
+    "prompt_tokens": 1051,
+    "prompt_tokens_details": {
+      "cached_tokens": 896,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1227
+  }
+}

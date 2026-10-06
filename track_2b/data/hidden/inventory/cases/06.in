@@ -1,0 +1,6 @@
+add bolt 10
+remove bolt 4
+remove bolt 7
+remove bolt 6
+count bolt
+report

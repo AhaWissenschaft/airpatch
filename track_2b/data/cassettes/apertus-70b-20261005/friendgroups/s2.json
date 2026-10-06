@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5761,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "3e4557f17459f72501d4a94414037c782b277be7e63c96dd2008aaee8627ab8a",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "friendgroups",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    group_of = {}\n    groups = []\n\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        names = line.split()\n\n        if len(names) == 1:\n            name = names[0]\n            if name not in group_of:\n                group_index = len(groups)\n                groups.append(set())\n                group_of[name] = group_index\n        else:\n            first_name = names[0]\n            second_name = names[1]\n            if first_name == second_name:\n                name = first_name\n                if name not in group_of:\n                    group_index = len(groups)\n                    groups.append(set())\n                    group_of[name] = group_index\n            else:\n                if first_name not in group_of:\n                    group_index_a = len(groups)\n                    groups.append(set())\n                    group_of[first_name] = group_index_a\n                if second_name not in group_of:\n                    group_index_b = len(groups)\n                    groups.append(set())\n                    group_of[second_name] = group_index_b\n\n                if group_of[first_name] != group_of[second_name]:\n                    group_a = groups[group_of[first_name]]\n                    group_b = groups[group_of[second_name]]\n\n                    if len(group_a) > len(group_b):\n                        group_a.update(group_b)\n                        for name in group_b:\n                            group_of[name] = group_of[first_name]\n                    else:\n                        group_b.update(group_a)\n                        for name in group_a:\n                            group_of[name] = group_of[second_name]\n\n    groups.sort(key=lambda s: (-len(s), min(s)))\n    for group in groups:\n        print(\" \".join(sorted(group)))\n    return\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 383,
+    "prompt_tokens": 608,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 991
+  }
+}

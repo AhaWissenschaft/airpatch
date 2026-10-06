@@ -1,0 +1,6 @@
+m 1 0 6
+n 2 1 7
+o left
+p 1 6 7
+q 1 7 9
+served 4 left 1 max wait 3

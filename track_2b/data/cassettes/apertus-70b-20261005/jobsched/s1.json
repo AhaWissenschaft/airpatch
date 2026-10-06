@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5467,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "1e1da887ceeaff06cd9edd57730f91f7ac8b73bd6cb5f094b4dd04ab898b9356",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "jobsched",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    jobs = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 4:\n            continue\n        try:\n            name, arrival, duration, priority = parts\n            arrival = int(arrival)\n            duration = int(duration)\n            priority = int(priority)\n        except ValueError:\n            continue\n        jobs.append((name, arrival, duration, priority))\n\n    # Sort by priority descending, arrival ascending, name ascending\n    jobs.sort(key=lambda x: (-x[3], x[1], x[0]))\n\n    time = 0\n    idle = 0\n    while jobs or time < float(\"inf\"):\n        # Find the next eligible job\n        eligible = [job for job in jobs if job[1] <= time]\n        if not eligible:\n            # No jobs arrived yet; idle\n            next_arrival = min(job[1] for job in jobs) if jobs else float(\"inf\")\n            idle += next_arrival - time\n            time = next_arrival\n            continue\n\n        # Select the best job from eligible ones\n        selected = max(eligible, key=lambda j: ( -j[3], j[1], j[0] ))\n        # Run the job\n        start = time\n        end = start + selected[2]\n        print(f\"{selected[0]} {start} {end}\")\n        time = end\n\n        # Remove the job from the list\n        jobs.remove(selected)\n\n    print(f\"idle {idle}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 361,
+    "prompt_tokens": 700,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1061
+  }
+}

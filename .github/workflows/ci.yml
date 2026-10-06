@@ -1,0 +1,40 @@
+# Public CI: no model calls and no secrets of any kind.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: track_2b
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Data size limit (100 MB)
+        run: |
+          size=$(du -sm data | cut -f1)
+          echo "data/ is ${size} MB"
+          test "$size" -le 100
+      - name: No secrets committed
+        run: |
+          ! grep -rnIE '(sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{20,}|hf_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY)' . 
+          test ! -e .env
+      - name: Shell syntax
+        run: sh -n scripts/airpatch.sh
+      - name: Unit and data tests
+        run: make test
+      - name: Task validation (no model)
+        run: make validate
+      - name: Pipeline regression (MOCK stub, dev split) and feedback leak scan
+        run: make regress
+      - name: Isolation test
+        run: make security
+      - name: make run without a key (REPLAY if a cassette exists, else MOCK)
+        run: make run

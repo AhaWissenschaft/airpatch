@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1989,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "a204b7a75fd3b08b56fa174f3f5bb5b6eb080377566f64ab44ca10bbd9168ce9",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "deccalc",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom decimal import Decimal, ROUND_HALF_UP\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            continue\n        a, op, b_str = parts\n        try:\n            a = Decimal(a)\n            b = Decimal(b_str)\n        except ValueError:\n            print(\"ERROR\")\n            continue\n        if op == \"+\":\n            result = a + b\n        elif op == \"-\":\n            result = a - b\n        elif op == \"*\":\n            result = a * b\n        else:\n            try:\n                result = round(a / b, 10, ROUND_HALF_UP)\n            except ZeroDivisionError:\n                print(\"ERROR\")\n                continue\n        # Format the output\n        if result == int(result):\n            print(result)\n        else:\n            s = str(result)\n            if \".\" in s:\n                integer_part, fractional_part = s.split(\".\")\n            else:\n                integer_part = s\n                fractional_part = \"\"\n            stripped_integer = integer_part.lstrip(\"0\")\n            if not stripped_integer:\n                stripped_integer = \"0\"\n            result_str = stripped_integer + \".\" + fractional_part.rstrip(\"0\")\n            print(result_str if result_str else \"0\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 309,
+    "prompt_tokens": 597,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 906
+  }
+}

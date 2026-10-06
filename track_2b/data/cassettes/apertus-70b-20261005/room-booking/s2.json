@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 12094,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "c7c366787c4557402bdd4a732dc469b8d103018ddea6c6518d6ab0c418ac879a",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "room-booking",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime, timedelta\n\ndef time_to_minutes(time_str):\n    h, m = map(int, time_str.split(':'))\n    return h * 60 + m\n\ndef minutes_to_time(minutes):\n    h = minutes // 60\n    m = minutes % 60\n    return f\"{h:02d}:{m:02d}\"\n\ndef overlaps(b1, b2):\n    return b1[3] < b2[4] and b2[3] < b1[4]\n\ndef main():\n    bookings = []\n    room_booking = {}  # room -> list of (bid, start_min, end_min)\n\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        cmd = parts[0]\n        if cmd == \"book\":\n            bid = parts[1]\n            room = parts[2]\n            day = parts[3]\n            start_str = parts[4]\n            end_str = parts[5]\n\n            # Parse times\n            try:\n                start_min = time_to_minutes(start_str)\n                end_min = time_to_minutes(end_str)\n            except ValueError:\n                print(f\"INVALID {bid}\")\n                continue\n\n            if end_min <= start_min:\n                print(f\"INVALID {bid}\")\n                continue\n\n            # Check for overlap with active bookings\n            overlaps_found = False\n            other = None\n            for other_bid, other_start_min, other_end_min in room_booking.get(\n                room, []\n            ):\n                if overlaps((start_min, end_min), (other_start_min, other_end_min)):\n                    overlaps_found = True\n                    if other is None or other_start_min < start_min:\n                        other = other_bid\n\n            if overlaps_found:\n                print(f\"REJECT {bid} {other}\")\n            else:\n                # Add booking\n                bookings.append((bid, room, day, start_str, end_str))\n                room_booking.setdefault(room, []).append((bid, start_min, end_min))\n                print(f\"ACCEPT {bid}\")\n        elif cmd == \"cancel\":\n            bid = parts[1]\n            found = False\n            new_bookings = []\n            for b in bookings:\n                if b[0] != bid:\n                    new_bookings.append(b)\n                else:\n                    found = True\n            bookings = new_bookings\n            if not found:\n                print(f\"UNKNOWN {bid}\")\n            else:\n                # Remove from room_booking as well\n                room = bookings[bookings.index((bid, _, _, _, _))][1]\n                room_bookings = room_booking.get(room, [])\n                room_bookings = [\n                    (bid2, s, e)\n                    for (bid2, s, e) in room_bookings\n                    if bid2 != bid\n                ]\n                room_booking[room] = room_bookings\n                print(f\"CANCELLED {bid}\")\n\n    # Summary\n    room_summary = {}\n    for room, bookings_list in room_booking.items():\n        total_minutes = 0\n        for _, start, end in bookings_list:\n            total_minutes += end - start\n        room_summary[room] = {\"count\": len(bookings_list), \"total_minutes\": total_minutes}\n\n    sorted_rooms = sorted(room_summary.keys())\n\n    for room in sorted_rooms:\n        count = room_summary[room][\"count\"]\n        total = room_summary[room][\"total_minutes\"]\n        hours = total // 60\n        minutes = total % 60\n        print(f\"{room} {count} {minutes_to_time(hours * 60 + minutes)}\")\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 817,
+    "prompt_tokens": 1210,
+    "prompt_tokens_details": {
+      "cached_tokens": 1184,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2027
+  }
+}

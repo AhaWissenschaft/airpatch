@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5004,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "c28a1d88ca215326498f1959e69624e008192456c301dbd21eafddd2f6cb87b7",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "maze",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom collections import deque\n\n\ndef main():\n    grid = []\n    for line in sys.stdin:\n        line = line.rstrip(\"\\n\")\n        if line:\n            grid.append(list(line))\n\n    rows, cols = len(grid), len(grid[0])\n    start = None\n    exits = []\n\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == \"S\":\n                start = (r, c)\n            elif grid[r][c] == \"E\":\n                exits.append((r, c))\n\n    if start is None or not exits:\n        print(\"NO PATH\")\n        return\n\n    visited = set()\n    queue = deque([(start[0], start[1], 0)])\n    visited.add((start[0], start[1]))\n\n    while queue:\n        r, c, steps = queue.popleft()\n        if (r, c) in exits:\n            print(steps)\n            return\n\n        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] != \"#\" and (nr, nc) not in visited:\n                visited.add((nr, nc))\n                queue.append((nr, nc, steps + 1))\n\n    print(\"NO PATH\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 331,
+    "prompt_tokens": 659,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 990
+  }
+}

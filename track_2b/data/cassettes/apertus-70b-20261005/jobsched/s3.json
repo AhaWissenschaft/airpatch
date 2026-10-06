@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3926,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "1e1da887ceeaff06cd9edd57730f91f7ac8b73bd6cb5f094b4dd04ab898b9356",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "jobsched",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    jobs = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        name, arrival, duration, priority = parts[0], int(parts[1]), int(parts[2]), int(parts[3])\n        jobs.append((name, arrival, duration, priority))\n\n    # Sort jobs by priority descending, then by arrival time ascending,\n    # then by name ascending\n    jobs.sort(key=lambda x: (-x[3], x[1], x[0]))\n\n    time = 0\n    idle = 0\n    job_index = 0\n\n    while job_index < len(jobs):\n        current_job = jobs[job_index]\n\n        if current_job[1] > time:\n            idle += current_job[1] - time\n            time = current_job[1]\n\n        print(f\"{current_job[0]} {time} {time + current_job[2]}\")\n\n        time += current_job[2]\n\n        job_index += 1\n\n    print(f\"idle {idle}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 255,
+    "prompt_tokens": 700,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 955
+  }
+}

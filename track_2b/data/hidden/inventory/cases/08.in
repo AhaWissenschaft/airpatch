@@ -1,0 +1,6 @@
+remove q 1
+add q 1
+remove q 1
+add q 2
+report
+count q

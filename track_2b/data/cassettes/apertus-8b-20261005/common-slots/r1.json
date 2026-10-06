@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3873,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "c0",
+  "prompt_sha256": "b33552a24c16808283d600326573847d2340a2cba091b0f1a092f5462a2dfb0c",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "common-slots",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\ndef clock(total):\n    return f\"{total // 60:02d}:{total % 60:02d}\"\n\ndef main():\n    settings = {}\n    busy = {}\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if not parts:\n            continue\n        if parts[0] == \"busy\":\n            who, day_str, start_str, end_str = parts[1:]\n            day = date.fromisoformat(day_str)\n            start = datetime.strptime(start_str, \"%H:%M\").time()\n            end = datetime.strptime(end_str, \"%H:%M\").time()\n            busy.setdefault((who, day), []).append((start, end))\n        else:\n            key = parts[0]\n            settings[key] = parts[1:]\n    first = date.fromisoformat(settings[\"days\"][0])\n    last = date.fromisoformat(settings[\"days\"][1])\n    open_at = datetime.min.time()\n    close_at = datetime.max.time()\n    need = int(settings[\"duration\"][0])\n    buffer = int(settings[\"buffer\"][0]) if \"buffer\" in settings else 0\n    day = first\n    while day <= last:\n        taken = []\n        for who, dates in busy.items():\n            for date_str in dates:\n                day = date.fromisoformat(date_str)\n                for start, end in busy[(who, day)]:\n                    taken.append((start, end))\n        slots = []\n        cursor = open_at\n        for start, end in taken:\n            if start - cursor >= need + buffer:\n                slots.append(f\"{clock(cursor)}-{clock(start)}\")\n            cursor = end\n        if close_at - cursor >= need + buffer:\n            slots.append(f\"{clock(cursor)}-{clock(close_at)}\")\n        free_slots = []\n        current_slot_start = open_at\n        for start, end in taken:\n            if start - current_slot_start >= need:\n                free_slots.append(f\"{clock(current_slot_start)}-{clock(start)}\")\n                current_slot_start = start\n        if close_at - current_slot_start >= need:\n            free_slots.append(f\"{clock(current_slot_start)}-{clock(close_at)}\")\n        print(day.isoformat(), \" \".join(free_slots) or \"none\")\n        day += timedelta(days=1)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 553,
+    "prompt_tokens": 2900,
+    "prompt_tokens_details": {
+      "cached_tokens": 2112,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 3453
+  }
+}

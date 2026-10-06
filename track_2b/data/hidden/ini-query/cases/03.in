@@ -1,0 +1,8 @@
+timeout = 30
+[api]
+retries = 3
+===
+api.timeout
+api.retries
+.timeout
+.retries

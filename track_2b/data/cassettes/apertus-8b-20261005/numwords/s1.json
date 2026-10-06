@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2451,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "0654db9e5084d33690c13a47654f5db64a9bca0d62e27d0800d9a63af456c1f0",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "numwords",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\nONES = [\"\", \"one\", \"two\", \"three\", \"four\", \"five\", \"six\", \"seven\", \"eight\", \"nine\", \"ten\",\n        \"eleven\", \"twelve\", \"thirteen\", \"fourteen\", \"fifteen\", \"sixteen\", \"seventeen\",\n        \"eighteen\", \"nineteen\"]\nTENS = [\"\", \"\", \"twenty\", \"thirty\", \"forty\", \"fifty\", \"sixty\", \"seventy\", \"eighty\", \"ninety\"]\nSCALES = [\"\", \" thousand\", \" million\", \" billion\", \" trillion\"]\n\ndef below_thousand(n):\n    words = \"\"\n    if n >= 100:\n        words += ONES[n // 100] + \" hundred \"\n        n %= 100\n    if n >= 20:\n        words += TENS[n // 10] + \" \"\n        n %= 10\n    words += ONES[n]\n    return words.strip()\n\n\ndef to_words(n):\n    if n == 0:\n        return \"zero\"\n    words = \"\"\n    scale = 0\n    if n < 0:\n        words = \"minus \"\n        n = -n\n    while n > 0:\n        words = below_thousand(n % 1000) + SCALES[scale] + \" \" + words\n        n = n // 1000\n        scale += 1\n    return words.strip()\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        num = int(line)\n        print(to_words(num))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 387,
+    "prompt_tokens": 919,
+    "prompt_tokens_details": {
+      "cached_tokens": 896,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1306
+  }
+}

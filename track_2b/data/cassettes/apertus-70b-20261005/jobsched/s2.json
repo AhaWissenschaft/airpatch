@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3034,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "1e1da887ceeaff06cd9edd57730f91f7ac8b73bd6cb5f094b4dd04ab898b9356",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "jobsched",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    jobs = []\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if parts:\n            name, arrival, duration, priority = parts\n            jobs.append((name, int(arrival), int(duration), int(priority)))\n\n    # Sort jobs by priority (descending), arrival time (ascending), then name (ascending)\n    jobs.sort(key=lambda j: (-j[3], j[1], j[0]))\n\n    time = 0\n    idle = 0\n    for name, arrival, duration, priority in jobs:\n        if arrival > time:\n            idle += arrival - time\n            time = arrival\n        print(f\"{name} {time} {time + duration}\")\n        time += duration\n    print(f\"idle {idle}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 193,
+    "prompt_tokens": 700,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 893
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1783,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "a63361c2be50b71be82ec322424a431f587cd930b4e751244ca7c0d937b870e3",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "shift-hours",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom collections import defaultdict\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef process_shift(in_time, out_time):\n    in_min = minutes(in_time)\n    out_min = minutes(out_time)\n    if out_min < in_min:\n        out_min += 24 * 60\n    worked = out_min - in_min\n    if worked > 6 * 60:\n        if worked > 9 * 60:\n            worked -= 45\n        else:\n            worked -= 30\n    return worked\n\n\ndef main():\n    employee_time = defaultdict(int)\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        name, in_time, out_time = line.split()\n        worked = process_shift(in_time, out_time)\n        employee_time[name] += worked\n    for name in sorted(employee_time.keys()):\n        total_min = employee_time[name]\n        h = total_min // 60\n        m = total_min % 60\n        print(f\"{name} {h}:{m:02d}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 272,
+    "prompt_tokens": 755,
+    "prompt_tokens_details": {
+      "cached_tokens": 736,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1027
+  }
+}

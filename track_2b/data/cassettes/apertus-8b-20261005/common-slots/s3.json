@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4022,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "477b6b30b6dfd6d159e95725138ed7acc464b4ebd3352fe7fba6fe4b51500935",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "common-slots",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\ndef clock(total):\n    return f\"{total // 60:02d}:{total % 60:02d}\"\n\ndef main():\n    settings = {}\n    busy = {}\n    buffer = 0\n    for line in sys.stdin:\n        parts = line.split()\n        if not parts:\n            continue\n        if parts[0] == \"busy\":\n            who, day, start, end = parts[1:]\n            busy.setdefault((who, day), [])\n            busy[(who, day)].append((minutes(start), minutes(end)))\n        elif parts[0] == \"hours\":\n            _, start, end = parts[1:]\n            open_at, close_at = (minutes(t) for t in (start, end))\n            settings[\"hours\"] = (open_at, close_at)\n        elif parts[0] == \"duration\":\n            _, minutes = parts[1:]\n            need = int(minutes)\n            settings[\"duration\"] = minutes\n        elif parts[0] == \"buffer\":\n            _, minutes = parts[1:]\n            buffer = int(minutes)\n\n    first = date.fromisoformat(settings[\"days\"][0])\n    last = date.fromisoformat(settings[\"days\"][1])\n    for day in range((int(first.toordinal()) // 7) * 7 + int(first.toordinal()) % 7,\n                     int(last.toordinal()) // 7 * 7 + int(last.toordinal()) % 7 + 1):\n        current_day = date.fromordinal(day)\n        if current_day.weekday() >= 5:\n            continue\n        key = current_day.isoformat()\n        taken = sorted(busy.get((who, key), []) + busy.get((who, key), []))\n        slots = []\n        cursor = open_at\n        for start, end in taken:\n            if start - cursor >= need:\n                slots.append(f\"{clock(cursor)}-{clock(start)}\")\n            cursor = end\n        if close_at - cursor >= need:\n            slots.append(f\"{clock(cursor)}-{clock(close_at)}\")\n        free_slots = []\n        current_slot_start = open_at\n        for interval in slots:\n            slot_start, slot_end = map(clock, interval.split(\"-\"))\n            if current_slot_start >= slot_end:\n                free_slots.append(interval)\n                current_slot_start = slot_start\n            else:\n                current_slot_start = slot_end\n        filtered = [slot for slot in free_slots if (close_at - current_slot_start) >= need]\n        print(f\"{key}\", \" \".join(filtered) or \"none\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 608,
+    "prompt_tokens": 1507,
+    "prompt_tokens_details": {
+      "cached_tokens": 1504,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2115
+  }
+}

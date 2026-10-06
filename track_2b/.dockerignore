@@ -1,0 +1,4 @@
+# Only the harness package goes into the image.
+*
+!src/airpatch
+**/__pycache__

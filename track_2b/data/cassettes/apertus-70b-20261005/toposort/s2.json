@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5185,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "67fa9f5acf0bd7d30d0c3fc13e8323b06e2213d1a86dd3aeab711d4eca254e5b",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "toposort",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    deps = {}\n    reverse_deps = {}\n    for line in sys.stdin:\n        if not line.strip():\n            continue\n        name, _, rest = line.partition(\":\")\n        task = name.strip()\n        deps.setdefault(task, []).extend(rest.split())\n\n        # Populate the reverse dependencies map\n        for d in rest.split():\n            reverse_deps.setdefault(d, []).append(task)\n\n    # Remove cycles from dependencies\n    visited = set()\n    cycle_found = False\n\n    def dfs(task):\n        nonlocal cycle_found\n        if cycle_found:\n            return\n        if task in visited:\n            return\n        visited.add(task)\n        for d in reverse_deps.get(task, []):\n            dfs(d)\n        visited.remove(task)\n\n    for task in list(deps.keys()):\n        if task not in visited:\n            dfs(task)\n            if task in visited:\n                cycle_found = True\n                break\n\n    if cycle_found:\n        remaining_tasks = sorted(deps.keys())\n        print(f\"CYCLE: {' '.join(remaining_tasks)}\")\n    else:\n        done = set()\n        order = []\n\n        def visit(task):\n            if task in done:\n                return\n            done.add(task)\n            for d in sorted(deps.get(task, [])):\n                visit(d)\n            order.append(task)\n\n        for task in sorted(deps.keys()):\n            visit(task)\n        for task in order:\n            print(task)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 326,
+    "prompt_tokens": 602,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 928
+  }
+}

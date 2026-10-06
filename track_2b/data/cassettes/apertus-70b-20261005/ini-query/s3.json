@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6698,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "319656a01987dfa350212433d88f6af642573bad63dc08c3d888ce971c46d4ef",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "ini-query",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    config, _, queries = text.partition(\"===\\n\")\n    data = {}\n    current_section = \"\"\n    for line in config.splitlines():\n        line = line.strip()\n        if not line or line.startswith(\";\"):\n            continue\n        if line.startswith(\"[\"):\n            current_section = line[1:-1].strip().lower()\n            if current_section not in data:\n                data[current_section] = {}\n            continue\n        if \"=\" not in line:\n            continue\n        key, value = line.split(\"=\", 1)\n        key = key.strip().lower()\n        value = value.strip()\n        # Handle quoted values\n        if value.startswith('\"'):\n            end_quote = value.find('\"', 1)\n            if end_quote != -1:\n                value = value[1 : end_quote].rstrip()\n        else:\n            # Remove comments after ';' or '#' that are preceded by space or tab\n            comment_index = None\n            for i in range(len(value)):\n                if (i == 0 and value[i] in (';', '#')):\n                    continue\n                elif (i > 0 and value[i] in (';', '#') and value[i - 1] in (' ', '\\t')):\n                    comment_index = i\n                    break\n            if comment_index is not None:\n                value = value[:comment_index].rstrip()\n        data.setdefault(current_section, {})[key] = value\n\n    for query_line in queries.splitlines():\n        query_line = query_line.strip()\n        if not query_line:\n            continue\n        parts = query_line.split('.', 1)\n        section_name = parts[0].strip().lower() if len(parts) > 0 else \"\"\n        key_name = parts[1].strip().lower() if len(parts) > 1 else \"\"\n        value = data.get(section_name, {}).get(key_name, \"NOT FOUND\")\n        print(value)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 445,
+    "prompt_tokens": 965,
+    "prompt_tokens_details": {
+      "cached_tokens": 960,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1410
+  }
+}

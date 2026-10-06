@@ -1,0 +1,18 @@
+{
+  "run": "run",
+  "answers": 236,
+  "models": [
+    "swiss-ai/Apertus-v1.5-8B"
+  ],
+  "served_models": [
+    "swiss-ai/Apertus-v1.5-8B"
+  ],
+  "recorded_at": [
+    "20261005T082204Z-8b"
+  ],
+  "conditions": [
+    "C0",
+    "C1",
+    "C2"
+  ]
+}

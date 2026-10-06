@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2082,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "508cbb9d12e9fa5371fc0f0e971cb93ea9b763c890053e95d26e343b81566f46",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "table-align",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nimport re\n\n\ndef is_number(s):\n    if not s:\n        return False\n    if s[0] == '-':\n        s = s[1:]\n    if '.' in s:\n        parts = s.split('.')\n        if len(parts) > 2:\n            return False\n        if not parts[1] or not parts[1].isdigit():\n            return False\n    if not s.isdigit():\n        return False\n    return True\n\n\ndef main():\n    rows = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        cells = line.split(\"|\")\n        rows.append(cells)\n\n    if not rows:\n        return\n\n    header_row = rows[0]\n    data_rows = rows[1:]\n\n    widths = [max(len(cell.strip()) for cell in column) for column in zip(*rows)]\n\n    def fmt(row):\n        cells = []\n        for i, cell in enumerate(row):\n            cell = cell.strip()\n            width = widths[i] if i < len(widths) else 0\n            if is_number(cell):\n                cells.append(cell.rjust(width))\n            else:\n                cells.append(cell.ljust(width))\n        return \" | \".join(cells)\n\n    print(fmt(header_row))\n    print(\"-+-\".join(\"-\" * w for w in widths))\n    for row in data_rows:\n        print(fmt(row))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 316,
+    "prompt_tokens": 1386,
+    "prompt_tokens_details": {
+      "cached_tokens": 992,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1702
+  }
+}

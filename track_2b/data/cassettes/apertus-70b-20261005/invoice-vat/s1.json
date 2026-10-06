@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4721,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "adfe9453ac9935bb759fab121acf3cb34eef6c1ced961ff948b3db1ad078fab8",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "invoice-vat",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    nets = {}\n    vats = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line or line.startswith(\"#\"):\n            continue\n        parts = line.split(\";\")\n        if len(parts) != 4:\n            continue\n        desc, qty, price, rate = parts[:4]\n        try:\n            qty = float(qty)\n            price = float(price)\n            rate = float(rate)\n        except ValueError:\n            continue\n        if qty <= 0:\n            continue\n        amount = round(qty * price, 2)\n        nets[rate] = nets.get(rate, 0.0) + amount\n        vat = round(amount * rate / 100, 2)\n        vats[rate] = vats.get(rate, 0.0) + vat\n    rates = sorted(nets.keys())\n    total = 0.0\n    for rate in rates:\n        net = nets[rate]\n        vat = vats[rate]\n        print(f\"{rate}% net {net:.2f} vat {vat:.2f}\")\n        total += net + vat\n    print(f\"total {total:.2f}\")\n    payable = round(total * 20) / 20\n    print(f\"payable {payable:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 311,
+    "prompt_tokens": 1094,
+    "prompt_tokens_details": {
+      "cached_tokens": 1088,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1405
+  }
+}

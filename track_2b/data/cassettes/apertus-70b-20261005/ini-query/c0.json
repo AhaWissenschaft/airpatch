@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6044,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "bc9f0afdf63bfb489ad2d67033fe8ea23d22b6f95b9edede086f91fe24e66c22",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "ini-query",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    config, _, queries = text.partition(\"===\\n\")\n    data = {}\n    current_section = None  # To track the current section\n\n    for line in config.splitlines():\n        line = line.strip()\n        if not line or line.startswith(\";\"):\n            continue\n        if line.startswith(\"[\"):\n            # Section header\n            section_name = line[1:-1].strip()\n            current_section = section_name.lower()\n            data.setdefault(current_section, {})\n        elif \"=\" in line:\n            # Key-value line\n            key, value = line.split(\"=\", 1)\n            key = key.strip().lower()\n            value = value.strip()\n\n            # Handle quoted values\n            if value.startswith('\"'):\n                end_quote = value.find('\"', 1)\n                if end_quote != -1:\n                    value = value[1 : end_quote]\n                else:\n                    value = \"\"  # Invalid, but keep as empty string\n            else:\n                # Remove comments after ;\n                comment_index = value.find(';')\n                if comment_index != -1:\n                    value = value[:comment_index].rstrip()\n\n            data[current_section][key] = value\n\n    for query_line in queries.splitlines():\n        query_line = query_line.strip()\n        if not query_line:\n            continue\n        parts = query_line.split(\".\", 1)\n        if len(parts) != 2:\n            print(\"NOT FOUND\")\n            continue\n        section, key = parts\n        section = section.strip().lower()\n        key = key.strip().lower()\n\n        value = data.get(section, {}).get(key, \"NOT FOUND\")\n        print(value)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 385,
+    "prompt_tokens": 965,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1350
+  }
+}

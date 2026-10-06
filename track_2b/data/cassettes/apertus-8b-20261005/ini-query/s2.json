@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1233,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "319656a01987dfa350212433d88f6af642573bad63dc08c3d888ce971c46d4ef",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "ini-query",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    config, _, queries = text.partition(\"===\\n\")\n    data = {}\n    section = \"\"\n    for line in config.splitlines():\n        line = line.strip()\n        if not line or line.startswith(\";\"):\n            continue\n        if line.startswith(\"[\"):\n            section = line[1:-1]\n            continue\n        key, value = line.split(\"=\", 1)\n        data.setdefault(section, {})[key.strip()] = value.strip()\n    for query in queries.splitlines():\n        if not query.strip():\n            continue\n        section, key = query.strip().split(\".\")\n        print(data.get(section, {}).get(key, \"NOT FOUND\"))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 178,
+    "prompt_tokens": 965,
+    "prompt_tokens_details": {
+      "cached_tokens": 960,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1143
+  }
+}

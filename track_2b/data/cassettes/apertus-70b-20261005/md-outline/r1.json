@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5419,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "c0",
+  "prompt_sha256": "5f6eb0262a3c5ced03a1ec6b7d74ccc8c85c918482ed76ab1c09af3e899987db",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "md-outline",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    counters = [0] * 6\n    slugs = {}\n    in_code_block = False\n\n    for line in sys.stdin:\n        line = line.rstrip(\"\\n\")\n\n        # Check if we are inside a code block\n        if line.startswith(\"```\"):\n            in_code_block = not in_code_block\n            continue\n\n        if in_code_block:\n            continue\n\n        if not line.startswith(\"#\"):\n            continue\n\n        level = len(line) - len(line.lstrip(\"#\"))\n        if level > 6:\n            continue\n\n        text = line[level:].strip()\n        if not text:\n            continue\n\n        # Remove trailing hashes and spaces\n        while text.endswith(\"# \") or text.endswith(\"#\"):\n            text = text[:-1].rstrip()\n        while text.startswith(\" \"):\n            text = text[1:]\n        while text.endswith(\" \"):\n            text = text[:-1]\n\n        counters[level - 1] += 1\n        for i in range(level, 6):\n            counters[i] = 0\n        number = \".\".join(str(c) for c in counters[:level])\n\n        slug = text.lower().replace(\" \", \"-\")\n        suffix = 1\n        while slug in slugs:\n            slug = f\"{slug}-{suffix}\"\n            suffix += 1\n        slugs[slug] = True\n\n        print(\"  \" * (level - 1) + f\"{number} {text} (#{slug})\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 339,
+    "prompt_tokens": 1464,
+    "prompt_tokens_details": {
+      "cached_tokens": 1216,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1803
+  }
+}

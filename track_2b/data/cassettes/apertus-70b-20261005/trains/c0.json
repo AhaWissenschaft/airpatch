@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6019,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "fd98f4119e94a8f0e645968b272a36e934ed2db1f7de871359c03a2166781125",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "trains",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport heapq\nimport sys\n\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef earliest(conns, change, src, dst, t0):\n    best = {src: t0}\n    came_with = {src: None}\n    heap = [(t0, src)]\n    while heap:\n        t, station = heapq.heappop(heap)\n        if station == dst:\n            return t\n        if t > best.get(station, float(\"inf\")):\n            continue\n        for train, to, dep, arr in conns.get(station, []):\n            need = t if train == came_with.get(station, None) else t + change\n            if dep >= need and arr < best.get(to, float(\"inf\")):\n                best[to] = arr\n                came_with[to] = train\n                heapq.heappush(heap, (arr, to))\n    return None\n\n\ndef main():\n    lines = [line.split() for line in sys.stdin.read().splitlines() if line.strip()]\n    change = int(lines[0][0])\n    conns = {}\n    for parts in lines[1:]:\n        if parts[0] == \"?\":\n            t = earliest(conns, change, parts[1], parts[2], minutes(parts[3]))\n            print(\"impossible\" if t is None else f\"{t // 60:02d}:{t % 60:02d}\")\n        else:\n            train, src, dst, dep_str, arr_str = parts\n            dep = minutes(dep_str)\n            arr = minutes(arr_str)\n            conns.setdefault(src, []).append((train, dst, dep, arr))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 399,
+    "prompt_tokens": 996,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1395
+  }
+}

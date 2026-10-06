@@ -1,0 +1,230 @@
+{
+  "runs": [
+    {
+      "label": "8b",
+      "mode": "LIVE",
+      "rows": [
+        {
+          "condition": "C0",
+          "solved": 2,
+          "tasks": 40,
+          "ci95": [
+            0.014,
+            0.165
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "C1",
+          "solved": 3,
+          "tasks": 40,
+          "ci95": [
+            0.026,
+            0.199
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "C2",
+          "solved": 2,
+          "tasks": 40,
+          "ci95": [
+            0.014,
+            0.165
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B0",
+          "solved": 0,
+          "tasks": 40,
+          "ci95": [
+            0.0,
+            0.088
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B1",
+          "solved": 0,
+          "tasks": 40,
+          "ci95": [
+            0.0,
+            0.088
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B2",
+          "solved": 40,
+          "tasks": 40,
+          "ci95": [
+            0.912,
+            1.0
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B3",
+          "solved": 0,
+          "tasks": 40,
+          "ci95": [
+            0.0,
+            0.088
+          ],
+          "infra_excluded": 0
+        }
+      ]
+    },
+    {
+      "label": "70b",
+      "mode": "LIVE",
+      "rows": [
+        {
+          "condition": "C0",
+          "solved": 2,
+          "tasks": 40,
+          "ci95": [
+            0.014,
+            0.165
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "C1",
+          "solved": 3,
+          "tasks": 40,
+          "ci95": [
+            0.026,
+            0.199
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "C2",
+          "solved": 2,
+          "tasks": 40,
+          "ci95": [
+            0.014,
+            0.165
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B0",
+          "solved": 0,
+          "tasks": 40,
+          "ci95": [
+            0.0,
+            0.088
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B1",
+          "solved": 0,
+          "tasks": 40,
+          "ci95": [
+            0.0,
+            0.088
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B2",
+          "solved": 39,
+          "tasks": 40,
+          "ci95": [
+            0.871,
+            0.996
+          ],
+          "infra_excluded": 0
+        },
+        {
+          "condition": "B3",
+          "solved": 0,
+          "tasks": 40,
+          "ci95": [
+            0.0,
+            0.088
+          ],
+          "infra_excluded": 0
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "what": "8b: C0 vs B1",
+      "tasks": 40,
+      "both": 0,
+      "only_a": 2,
+      "only_b": 0,
+      "neither": 38,
+      "p_value": 0.5
+    },
+    {
+      "what": "8b: C1 vs C0",
+      "tasks": 40,
+      "both": 2,
+      "only_a": 1,
+      "only_b": 0,
+      "neither": 37,
+      "p_value": 1.0
+    },
+    {
+      "what": "8b: C2 vs C0",
+      "tasks": 40,
+      "both": 2,
+      "only_a": 0,
+      "only_b": 0,
+      "neither": 38,
+      "p_value": 1.0
+    },
+    {
+      "what": "70b: C0 vs B1",
+      "tasks": 40,
+      "both": 0,
+      "only_a": 2,
+      "only_b": 0,
+      "neither": 38,
+      "p_value": 0.5
+    },
+    {
+      "what": "70b: C1 vs C0",
+      "tasks": 40,
+      "both": 2,
+      "only_a": 1,
+      "only_b": 0,
+      "neither": 37,
+      "p_value": 1.0
+    },
+    {
+      "what": "70b: C2 vs C0",
+      "tasks": 40,
+      "both": 2,
+      "only_a": 0,
+      "only_b": 0,
+      "neither": 38,
+      "p_value": 1.0
+    },
+    {
+      "what": "C0: 8b vs 70b",
+      "tasks": 40,
+      "both": 1,
+      "only_a": 1,
+      "only_b": 1,
+      "neither": 37,
+      "p_value": 1.0
+    },
+    {
+      "what": "C2: 8b vs 70b",
+      "tasks": 40,
+      "both": 1,
+      "only_a": 1,
+      "only_b": 1,
+      "neither": 37,
+      "p_value": 1.0
+    }
+  ]
+}

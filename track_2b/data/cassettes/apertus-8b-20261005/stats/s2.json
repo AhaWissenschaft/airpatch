@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1943,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "cca9d167c3d845786b13892e32e1c98f04f4b70a87b584e29505663e9733ff36",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "stats",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\ndef main():\n    values = []\n    for line in sys.stdin:\n        values.extend(map(int, line.strip().split()))\n\n    n = len(values)\n    if n == 0:\n        print(\"count 0\")\n        return\n\n    mean = sum(values) / n\n    mean_rounded = round(mean, 2)\n    if mean_rounded == int(mean_rounded):\n        mean_str = f\"{mean_rounded:.2f}\"\n    else:\n        mean_str = f\"{mean_rounded:.2f}\"\n\n    s = sorted(values)\n    if n % 2 == 1:\n        median = s[n // 2]\n    else:\n        median = (s[n // 2 - 1] + s[n // 2]) / 2\n\n    counts = {}\n    for v in values:\n        counts[v] = counts.get(v, 0) + 1\n    mode = min(key for key, value in counts.items() if value == max(counts.values()))\n\n    range_val = max(values) - min(values)\n\n    print(\"count\", n)\n    print(\"mean\", mean_str)\n    print(\"median\", f\"{median:.1f}\" if median % 1 else str(median))\n    print(\"mode\", mode)\n    print(\"range\", range_val)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 300,
+    "prompt_tokens": 654,
+    "prompt_tokens_details": {
+      "cached_tokens": 640,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 954
+  }
+}

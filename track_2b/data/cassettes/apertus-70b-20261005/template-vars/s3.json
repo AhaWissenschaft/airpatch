@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5028,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "b7dd79e887e95a02333dcfa5767f7315ca3580b79a00117f391e778bcbef6a95",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "template-vars",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    if \"---\" in text:\n        head, _, body = text.partition(\"---\\n\")\n        variables = {}\n        for line in head.splitlines():\n            line = line.strip()\n            if not line or line.startswith(\"#\"):\n                continue\n            if \"=\" not in line:\n                continue\n            name, value = line.split(\"=\", 1)\n            name = name.strip()\n            value = value.strip()\n            variables[name] = value\n        processed_body = process_template(body, variables)\n        sys.stdout.write(processed_body)\n    else:\n        sys.stdout.write(text)\n\n\ndef process_template(template, variables):\n    result = \"\"\n    i = 0\n    while i < len(template):\n        if template[i] == \"{{\":\n            result += \"{\"\n            i += 2\n        elif template[i] == \"}}\":\n            result += \"}\"\n            i += 2\n        elif template[i] == \"{\":\n            j = i + 1\n            while j < len(template) and template[j] != \"}\":\n                j += 1\n            if j >= len(template):\n                result += \"{\" + template[i:]\n                break\n            name = template[i + 1 : j].strip()\n            value = variables.get(name, \"\")\n            result += \"{\" + value + \"}\"\n            i = j + 1\n        else:\n            result += template[i]\n            i += 1\n    return result\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 332,
+    "prompt_tokens": 680,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1012
+  }
+}

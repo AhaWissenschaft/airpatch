@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2181,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "55c8a74fd18218ba1faf2aa7de99a2ae6993a86f71cc97bec75cc61799e5249d",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "swiss-dates",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\nfrom datetime import date\n\nSWISS = re.compile(r\"([0-9]{1,2})\\.([0-9]{1,2})\\.([0-9]{4})\")\nISO = re.compile(r\"([0-9]{4})-([0-9]{2})-([0-9]{2})\")\n\n\ndef plausible(y, m, d):\n    return 1 <= m <= 12 and 1 <= d <= 31\n\n\ndef convert(text):\n    m = SWISS.fullmatch(text)\n    if m:\n        d, mo, y = map(int, m.groups())\n        try:\n            date_obj = date(y, mo, d)\n            return f\"{y:04d}-{mo:02d}-{d:02d}\"\n        except ValueError:\n            return \"invalid\"\n    m = ISO.fullmatch(text)\n    if m:\n        y, mo, d = map(int, m.groups())\n        try:\n            date_obj = date(y, mo, d)\n            return f\"{d:02d}.{mo:02d}.{y:04d}\"\n        except ValueError:\n            return \"invalid\"\n    return \"invalid\"\n\n\ndef main():\n    for line in sys.stdin:\n        text = line.strip()\n        if text:\n            print(convert(text))\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 297,
+    "prompt_tokens": 1296,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1593
+  }
+}

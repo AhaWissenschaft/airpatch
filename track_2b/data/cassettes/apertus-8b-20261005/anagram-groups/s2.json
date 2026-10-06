@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1371,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "c2554535f0314d09a9da226aa844e702e9f4bc8e12c4c356ebaab4a29bf5d976",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "anagram-groups",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom collections import defaultdict\n\ndef main():\n    groups = defaultdict(list)\n    for line in sys.stdin:\n        words = line.strip().split()\n        for word in words:\n            word_lower = word.lower()\n            sorted_word = \"\".join(sorted(word_lower))\n            groups[sorted_word].append(word_lower)\n    output_groups = []\n    for key in sorted(groups.keys(), reverse=True):\n        words = groups[key]\n        if len(words) >= 2:\n            sorted_words = sorted(words)\n            output_groups.append(\" \".join(sorted_words))\n    output_groups.sort(reverse=True, key=lambda x: len(x.split()))\n    for group in output_groups:\n        print(group)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 168,
+    "prompt_tokens": 498,
+    "prompt_tokens_details": {
+      "cached_tokens": 480,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 666
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4994,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "ff4b937640a2b8373e8cf7de20a69b1599bbd6e8c2c5fbbb88a5aabb651b679f",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "mail-merge",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    home = lines[0].split(\"=\")[1].strip()\n    for raw in lines[1:]:\n        if not raw.strip():\n            continue\n        parts = raw.split(\";\")\n        title = parts[0].strip() if len(parts) > 0 else \"\"\n        first = parts[1].strip() if len(parts) > 1 else \"\"\n        last = parts[2].strip() if len(parts) > 2 else \"\"\n        street = parts[3].strip() if len(parts) > 3 else \"\"\n        postcode = parts[4].strip() if len(parts) > 4 else \"\"\n        city = parts[5].strip() if len(parts) > 5 else \"\"\n        country = parts[6].strip() if len(parts) > 6 else \"\"\n\n        name_line = \" \".join(filter(None, [title, first, last])).strip()\n        if not name_line:\n            name_line = \"To the occupant\"\n\n        if street:\n            print(name_line)\n            print(street)\n        else:\n            continue\n\n        address_line = \" \".join(filter(None, [postcode, city])).strip()\n        if address_line:\n            print(address_line)\n        else:\n            continue\n\n        if country and country != home.upper():\n            print(country.upper())\n        else:\n            continue\n\n        print(\"---\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 329,
+    "prompt_tokens": 828,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1157
+  }
+}

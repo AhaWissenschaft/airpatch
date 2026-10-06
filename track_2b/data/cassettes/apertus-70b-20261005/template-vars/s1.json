@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2713,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "b7dd79e887e95a02333dcfa5767f7315ca3580b79a00117f391e778bcbef6a95",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "template-vars",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    if \"\\n---\\n\" not in text:\n        sys.stdout.write(text)\n        return\n    head, _, body = text.partition(\"---\\n\")\n    variables = {}\n    for line in head.splitlines():\n        stripped = line.strip()\n        if not stripped or stripped.startswith(\"#\"):\n            continue\n        if \"=\" not in stripped:\n            continue\n        name, value = stripped.split(\"=\", 1)\n        variables[name.strip()] = value.strip()\n    for name, value in variables.items():\n        body = body.replace(\"{\" + name + \"}\", value)\n    body = body.replace(\"{{\", \"{\").replace(\"}}\", \"}\")\n    sys.stdout.write(body)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 176,
+    "prompt_tokens": 680,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 856
+  }
+}

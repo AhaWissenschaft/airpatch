@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4429,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "cca9d167c3d845786b13892e32e1c98f04f4b70a87b584e29505663e9733ff36",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "stats",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    values = [int(x) for line in lines for x in line.split()]\n    n = len(values)\n    print(\"count\", n)\n    if n == 0:\n        return\n    total = sum(values)\n    mean_val = total / n\n    mean = f\"{mean_val:.2f}\".replace(\"-0.00\", \"0.00\")\n    print(\"mean\", mean)\n    s = sorted(values)\n    mid = n // 2\n    if n % 2 == 0:\n        median = (s[mid - 1] + s[mid]) / 2\n    else:\n        median = s[mid]\n    print(\"median\", int(median + 0.5) if median % 1 != 0 else median)\n    counts = {}\n    for v in values:\n        counts[v] = counts.get(v, 0) + 1\n    max_count = max(counts.values())\n    modes = [k for k, v in counts.items() if v == max_count]\n    print(\"mode\", min(modes))\n    print(\"range\", max(values) - min(values))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 275,
+    "prompt_tokens": 654,
+    "prompt_tokens_details": {
+      "cached_tokens": 640,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 929
+  }
+}

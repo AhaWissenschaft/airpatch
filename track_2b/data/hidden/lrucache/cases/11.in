@@ -1,0 +1,10 @@
+4
+put a 1
+put b 2
+put c 3
+put d 4
+get a
+get c
+put e 5
+put f 6
+dump

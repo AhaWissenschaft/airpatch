@@ -1,0 +1,14 @@
+{
+ "id": "dedupe-ci",
+ "kind": "benchmark",
+ "title": "Remove duplicate lines",
+ "tier": "T1",
+ "split": "test",
+ "entry": "main.py",
+ "editable": [
+  "main.py"
+ ],
+ "time_limit_s": 5,
+ "mem_limit_mb": 128,
+ "compare": "lines"
+}

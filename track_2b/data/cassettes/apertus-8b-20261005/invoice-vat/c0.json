@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2278,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "99e3df3f0929ffed26965aa44e49a6072e660c51c682a97ea87265d54b623a8c",
+  "recorded_at": "20261005T082204Z-8b",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "invoice-vat",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom decimal import Decimal, ROUND_HALF_UP\n\ndef main():\n    nets = {}\n    vats = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line or line.startswith(\"#\"):\n            continue\n        parts = line.split(\";\")\n        desc, qty, price, rate = parts\n        qty = qty.strip()\n        price = price.strip()\n        rate = rate.strip()\n        try:\n            qty_dec = Decimal(qty)\n            price_dec = Decimal(price)\n            rate_dec = Decimal(rate)\n        except:\n            continue\n        amount = qty_dec * price_dec\n        nets[rate] = nets.get(rate, Decimal(0)) + amount\n        vat_amount = amount * rate_dec / Decimal(100)\n        vats[rate] = vats.get(rate, Decimal(0)) + round(vat_amount, 2)\n    total = Decimal(0)\n    for rate in sorted(nets):\n        total += nets[rate] + vats[rate]\n    total_rounded = round(total * 20) / 20\n    for rate in sorted(nets):\n        net_amount = nets[rate].quantize(Decimal(\"0.01\"))\n        vat_amount = vats[rate].quantize(Decimal(\"0.01\"))\n        print(f\"{rate}% net {net_amount:.2f} vat {vat_amount:.2f}\")\n    print(f\"total {total_rounded:.2f}\")\n    print(f\"payable {total_rounded:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 352,
+    "prompt_tokens": 1094,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1446
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2203,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "354d59583897e542af4d8e2334bdec24d2b8671eaecc774072537a84d2253450",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "mail-merge",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    home = lines[0].split(\"=\")[1].strip()\n    for raw in lines[1:]:\n        if not raw.strip():\n            continue\n        fields = raw.strip().split(\";\")\n        title = fields[0].strip() if fields and fields[0] else \"\"\n        first = fields[1].strip() if len(fields) > 1 and fields[1] else \"\"\n        last = fields[2].strip() if len(fields) > 2 and fields[2] else \"\"\n        street = fields[3].strip() if len(fields) > 3 and fields[3] else \"\"\n        postcode = fields[4].strip() if len(fields) > 4 and fields[4] else \"\"\n        city = fields[5].strip() if len(fields) > 5 and fields[5] else \"\"\n        country = fields[6].strip() if len(fields) > 6 and fields[6] else \"\"\n\n        name_line = f\"{title} {first} {last}\".strip()\n        if not first and not last:\n            name_line = \"To the occupant\"\n\n        if street:\n            print(name_line)\n            print(street)\n        if postcode and city:\n            print(f\"{postcode} {city}\")\n\n        if country and country.upper() != home.upper():\n            print(country.upper())\n\n        if street and postcode and city:\n            print(\"---\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 339,
+    "prompt_tokens": 828,
+    "prompt_tokens_details": {
+      "cached_tokens": 800,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1167
+  }
+}

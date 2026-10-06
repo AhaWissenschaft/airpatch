@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5814,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "7357422e934e85936a1652e2b080d9dee51e70d1a8847ae044bfcb6d9703bbc3",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "allocate",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = [line.split() for line in sys.stdin if line.strip()]\n    if not lines:\n        print(\"ERROR\")\n        return\n\n    amount_str = lines[0][0]\n    amount = float(amount_str)\n\n    if amount == 0:\n        print(\"ERROR\")\n        return\n\n    people = []\n    for line in lines[1:]:\n        if not line:\n            continue\n        name, weight_str = line\n        try:\n            weight = int(weight_str)\n        except ValueError:\n            print(\"ERROR\")\n            return\n        if weight < 0:\n            print(\"ERROR\")\n            return\n        people.append((name, weight))\n\n    if not people:\n        print(\"ERROR\")\n        return\n\n    total_weight = sum(w for _, w in people)\n\n    shares = []\n    for name, w in people:\n        exact_share = abs(amount * w / total_weight)\n        shares.append((name, exact_share - (exact_sharer // 1), w))\n\n    remaining_cents = int(abs(amount * total_weight) - sum(\n        int(share[0]) for share in shares))\n\n    shares_sorted = sorted(shares, key=lambda x: (-x[1], people.index(x[0], 0)))\n\n    for idx in range(remaining_cents):\n        name, _, _ = shares_sorted[idx]\n        shares[people.index((name, _))][0] += 1\n\n    for name, share in shares:\n        print(f\"{name} {abs(share):.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 353,
+    "prompt_tokens": 703,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1056
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3793,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "r1",
+  "prompt_sha256": "6e5fc32211c4a71abbd2b5510512b7589badc36cbf4453a0911d096a5473aa07",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "toposort",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    deps = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        name, _, rest = line.partition(\":\")\n        name = name.strip()\n        deps.setdefault(name, []).extend([d.strip() for d in rest.split()])\n\n    done = set()\n    order = []\n\n    def visit(task):\n        if task in done:\n            return\n        done.add(task)\n        for d in sorted(deps.get(task, [])):\n            visit(d)\n        order.append(task)\n\n    remaining = set(deps.keys())\n    while remaining:\n        no_deps = [task for task in remaining if all(d in done for d in deps.get(task, []))]\n        if not no_deps:\n            print(\"CYCLE: \" + \" \".join(sorted(remaining)))\n            return\n        task = min(no_deps)\n        visit(task)\n        remaining.discard(task)\n\n    for task in order:\n        print(task)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 234,
+    "prompt_tokens": 1012,
+    "prompt_tokens_details": {
+      "cached_tokens": 992,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1246
+  }
+}

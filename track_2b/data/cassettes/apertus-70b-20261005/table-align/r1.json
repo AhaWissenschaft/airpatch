@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4681,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "c0",
+  "prompt_sha256": "9f300fea5e45214ffc339cb97fd958ed92fd1bcfbede7b3b0152bbb4c3144d91",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "table-align",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    rows = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        cells = [cell.strip() for cell in line.split(\"|\")]\n        rows.append(cells)\n\n    if not rows:\n        return\n\n    # Determine column widths\n    widths = [max(len(cell) for cell in column) for column in zip(*rows)]\n\n    # Determine if each column is numeric\n    is_numeric = [all(cell.replace('.', '', 1).isdigit() for cell in column[1:] if cell) for column in zip(*rows)]\n\n    def fmt(row, widths, is_numeric):\n        cells = []\n        for cell, width, numeric in zip(row, widths, is_numeric):\n            if numeric and cell:\n                # Pad numeric columns on the left\n                cells.append(cell.rjust(width))\n            else:\n                # Pad other columns on the right\n                cells.append(cell.ljust(width))\n        return \" | \".join(cells)\n\n    # Print header\n    header = fmt(rows[0], widths, is_numeric)\n    print(header)\n\n    # Print separator\n    separator = \"-+-\".join(\"-\" * w for w in widths)\n    print(separator)\n\n    # Print data rows\n    for row in rows[1:]:\n        print(fmt(row, widths, is_numeric))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 306,
+    "prompt_tokens": 1242,
+    "prompt_tokens_details": {
+      "cached_tokens": 1088,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1548
+  }
+}

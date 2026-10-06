@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1536,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "c0",
+  "prompt_sha256": "308c9b7bdf666108373f1c404f1b2b08c89c1456726f91a3fa3e44aeb0effe69",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "gcdlcm",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nimport math\n\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        nums = list(map(int, line.split()))\n        if not nums:\n            continue\n        positive_nums = [abs(n) for n in nums]\n        if 0 in positive_nums:\n            g = 0\n            l = 0\n        else:\n            g = positive_nums[0]\n            l = positive_nums[0]\n            for n in positive_nums[1:]:\n                g = math.gcd(g, n)\n                l = l * n // math.gcd(l, n)\n        print(g, l)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 193,
+    "prompt_tokens": 827,
+    "prompt_tokens_details": {
+      "cached_tokens": 704,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1020
+  }
+}

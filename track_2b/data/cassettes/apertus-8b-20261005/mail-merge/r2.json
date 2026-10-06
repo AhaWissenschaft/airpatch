@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1690,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "7ecb764ed7dcc470012798009ffccc0df82b0b2f5c867937da8fbdc5aa5b5b3f",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "mail-merge",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    home = lines[0].split(\"=\")[1].strip()\n    for raw in lines[1:]:\n        if not raw.strip():\n            continue\n        fields = raw.strip().split(\";\")\n        title, first, last, street, postcode, city, country = (\n            fields[0],\n            fields[1],\n            fields[2],\n            fields[3],\n            fields[4],\n            fields[5],\n            fields[6],\n        )\n        name_line = f\"{title} {first} {last}\".strip()\n        if not first and not last:\n            name_line = \"To the occupant\"\n        print(name_line)\n        if street.strip():\n            print(street.strip())\n        if postcode.strip() and city.strip():\n            print(f\"{postcode.strip()} {city.strip()}\")\n        if country.strip() and country.strip().upper() != home.strip().upper():\n            print(country.strip().upper())\n        if street.strip() and postcode.strip() and city.strip():\n            print(\"---\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 251,
+    "prompt_tokens": 1511,
+    "prompt_tokens_details": {
+      "cached_tokens": 1504,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1762
+  }
+}

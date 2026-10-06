@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1976,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "bde363196aeb41e456656104f1d30165e241ecbc6107cc0cefcd3ef325de4b7e",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "age-groups",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date\n\n\ndef parse(text):\n    y, m, d = map(int, text.split(\"-\"))\n    return date(y, m, d)\n\n\ndef main():\n    lines = [line.split() for line in sys.stdin if line.strip()]\n    ref = parse(lines[0][0])\n    counts = {}\n    for name, born in lines[1:]:\n        birth_date = parse(born)\n        age = ref.year - birth_date.year\n        if birth_date.month > ref.month:\n            age -= 1\n        elif birth_date.month == ref.month and birth_date.day > ref.day:\n            age -= 1\n        if age < 13:\n            group = \"child\"\n        elif age < 18:\n            group = \"teen\"\n        elif age < 65:\n            group = \"adult\"\n        else:\n            group = \"senior\"\n        counts[group] = counts.get(group, 0) + 1\n        print(name, age, group)\n    for group in counts:\n        print(group, counts[group])\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 248,
+    "prompt_tokens": 701,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 949
+  }
+}

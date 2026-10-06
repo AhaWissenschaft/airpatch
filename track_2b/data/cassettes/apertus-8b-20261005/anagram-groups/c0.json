@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1025,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "5b68e16d983d6cd80252325018e23604ccc3d3f47fde5b4ed255f357bd9b4519",
+  "recorded_at": "20261005T082204Z-8b",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "anagram-groups",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom collections import defaultdict\n\n\ndef main():\n    groups = defaultdict(list)\n    for word in sys.stdin.read().lower().split():\n        sorted_word = \"\".join(sorted(word))\n        groups[sorted_word].append(word)\n    for key in sorted(groups.keys(), reverse=True):\n        words = groups[key]\n        if len(words) >= 2:\n            print(\" \".join(sorted(words)))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 110,
+    "prompt_tokens": 498,
+    "prompt_tokens_details": {
+      "cached_tokens": 480,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 608
+  }
+}

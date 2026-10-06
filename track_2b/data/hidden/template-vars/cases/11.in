@@ -1,0 +1,5 @@
+Name=Upper
+name=lower
+brace={{
+---
+{Name} {name} {NAME} {brace}

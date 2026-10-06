@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1857,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "a204b7a75fd3b08b56fa174f3f5bb5b6eb080377566f64ab44ca10bbd9168ce9",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "deccalc",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom decimal import Decimal\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            continue\n        a_str, op, b_str = parts\n        a = Decimal(a_str)\n        b = Decimal(b_str)\n        if op == \"+\":\n            result = a + b\n        elif op == \"-\":\n            result = a - b\n        elif op == \"*\":\n            result = a * b\n        else:\n            if b == 0:\n                print(\"ERROR\")\n                continue\n            result = round(a / b, 10)\n        # Format the result\n        if result == 0:\n            print(\"0\")\n        elif result.is_integer():\n            print(int(result))\n        else:\n            s = str(result)\n            if \".\" in s:\n                integer_part, fractional_part = s.split(\".\", 1)\n            else:\n                integer_part = s\n                fractional_part = \"\"\n            formatted_result = integer_part\n            if fractional_part:\n                formatted_result += \".\" + fractional_part.lstrip(\"0\")\n                if not formatted_result:\n                    formatted_result = \"0\"\n            print(formatted_result)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 284,
+    "prompt_tokens": 597,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 881
+  }
+}

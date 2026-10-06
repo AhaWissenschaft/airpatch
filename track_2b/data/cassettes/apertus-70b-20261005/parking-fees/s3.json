@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 10777,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "2c4b0cdc7db8768436d34ede662d20dc975d6651e7ab2d9dbb6291a1db29cf82",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "parking-fees",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\n\ndef minutes(text):\n    h, m = map(int, text.split(\":\"))\n    return h * 60 + m\n\n\ndef is_block_expensive(block_start):\n    hour = block_start // 60\n    minute = block_start % 60\n    return 8 <= hour <= 19 and 0 <= minute < 60\n\n\ndef compute_fee(duration_minutes):\n    if duration_minutes <= 30:\n        return 0.0\n    blocks = (duration_minutes + 59) // 60\n    fee = blocks * 2.5\n    return min(fee, 18.0)\n\n\ndef compute_periods(duration_minutes):\n    total_blocks = (duration_minutes + 59) // 60\n    periods = []\n    for start in range(0, total_blocks, 24):\n        end = start + 24\n        period_blocks = min(end, total_blocks) - start\n        period_blocks = min(period_blocks, total_blocks - start)\n        period_fee = sum(\n            2.50 if is_block_expensive(b) else 1.00 for b in range(start, start + period_blocks)\n        )\n        periods.append(period_fee)\n    return periods\n\n\ndef compute_total_fee(duration_minutes):\n    blocks_fee = compute_fee(duration_minutes)\n    periods_fee = sum(compute_periods(duration_minutes))\n    return min(blocks_fee, periods_fee)\n\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 5:\n            print(f\"{parts[0]} invalid\")\n            continue\n        plate, entry_date, entry_time, exit_date, exit_time = parts\n        try:\n            entry = datetime.strptime(f\"{entry_date} {entry_time}\", \"%Y-%m-%d %H:%M\")\n            exit_time_obj = datetime.strptime(f\"{exit_date} {exit_time}\", \"%Y-%m-%d %H:%M\")\n        except ValueError:\n            print(plate, \"invalid\")\n            continue\n        duration_minutes = (exit_time_obj - entry).total_seconds() / 60\n        if duration_minutes < 0:\n            print(plate, \"invalid\")\n            continue\n        fee = compute_total_fee(duration_minutes)\n        hours = duration_minutes // 60\n        minutes = duration_minutes % 60\n        print(f\"{plate} {hours}:{minutes:02d} {fee:.2f}\")\n        totals[plate] = totals.get(plate, 0.0) + fee\n    print(\"---\")\n    valid_plates = [k for k, v in totals.items() if v > 0]\n    if not valid_plates:\n        return\n    sorted_plates = sorted(\n        valid_plates,\n        key=lambda p: (-totals[p], p),\n    )\n    for plate in sorted_plates:\n        print(f\"{plate} {int(totals[plate])} {totals[plate]:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 711,
+    "prompt_tokens": 1288,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1999
+  }
+}

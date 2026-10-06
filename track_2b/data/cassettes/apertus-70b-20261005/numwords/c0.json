@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6822,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "a0b8d0df764ebbf7e275cef9eb19aa06ffffa58044993019dfcf850e4dd2a03b",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "numwords",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\nONES = [\"\", \"one\", \"two\", \"three\", \"four\", \"five\", \"six\", \"seven\", \"eight\", \"nine\", \"ten\",\n        \"eleven\", \"twelve\", \"thirteen\", \"fourteen\", \"fifteen\", \"sixteen\", \"seventeen\",\n        \"eighteen\", \"nineteen\"]\nTENS = [\"\", \"\", \"twenty\", \"thirty\", \"forty\", \"fifty\", \"sixty\", \"seventy\", \"eighty\", \"ninety\"]\nSCALES = [\"\", \" thousand\", \" million\", \" billion\", \" trillion\"]\n\ndef below_thousand(n):\n    words = \"\"\n    if n >= 100:\n        words += ONES[n // 100] + \" hundred \"\n        n %= 100\n    if n >= 20:\n        words += TENS[n // 10] + \" \"\n        n %= 10\n    words += ONES[n]\n    return words.strip()\n\ndef to_words(n):\n    if n == 0:\n        return \"zero\"\n    sign = \"\"\n    if n < 0:\n        sign = \"minus \"\n        n = -n\n    num_str = str(n)\n    num_str = num_str.lstrip('0')\n    if not num_str:\n        return \"zero\"\n    words = below_thousand(int(num_str))\n    scale = 0\n    while len(num_str) > 3:\n        words = below_thousand(int(num_str[-3:])) + SCALES[scale] + \" \" + words\n        num_str = num_str[:-3]\n        scale += 1\n    if num_str:\n        words = below_thousand(int(num_str)) + \" \" + words\n    return sign + words.strip()\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if line:\n            print(to_words(int(line)))\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 440,
+    "prompt_tokens": 919,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1359
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 9163,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "12f7364758b92da331e37f0a17d9c18af9ad3e08a6902091309b2cb4c159a0eb",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "league",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    table = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        home, away, score = parts[0], parts[1], parts[2]\n        hg, ag = map(int, score.split(\"-\"))\n\n        for team in (home, away):\n            table.setdefault(team, {\n                \"p\": 0,\n                \"w\": 0,\n                \"d\": 0,\n                \"l\": 0,\n                \"gf\": 0,\n                \"ga\": 0\n            })\n\n        table[home][\"p\"] += 1\n        table[home][\"gf\"] += hg\n        table[home][\"ga\"] += ag\n        table[away][\"p\"] += 1\n        table[away][\"gf\"] += ag\n        table[away][\"ga\"] += hg\n\n        if hg > ag:\n            table[home][\"w\"] += 1\n            table[away][\"l\"] += 1\n        elif hg < ag:\n            table[away][\"w\"] += 1\n            table[home][\"l\"] += 1\n        else:\n            table[home][\"d\"] += 1\n            table[away][\"d\"] += 1\n\n    def points(t):\n        return 3 * t[\"w\"] + t[\"d\"]\n\n    def key_func(team_name):\n        t = table[team_name]\n        return (-points(t), t[\"gf\"] - t[\"ga\"], t[\"gf\"], team_name)\n\n    order = sorted(table.keys(), key=key_func)\n\n    def compute_ranks(ordered_teams):\n        current_points = None\n        current_gd = None\n        current_gf = None\n        current_rank = 1\n        prev_points = None\n        prev_gd = None\n        prev_gf = None\n\n        for team in ordered_teams:\n            t = table[team]\n            points_val = points(t)\n            gd = t[\"gf\"] - t[\"ga\"]\n            gf = t[\"gf\"]\n\n            if points_val != current_points or gd != current_gd or gf != current_gf:\n                current_rank += 1\n                prev_points = current_points\n                prev_gd = current_gd\n                prev_gf = current_gf\n                current_points = points_val\n                current_gd = gd\n                current_gf = gf\n            print(f\"{current_rank} {team} {t['p']} {t['w']} {t['d']} {t['l']} {t['gf']}:{t['ga']} {points_val}\")\n\n\n    if table:\n        compute_ranks(order)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 613,
+    "prompt_tokens": 935,
+    "prompt_tokens_details": {
+      "cached_tokens": 928,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1548
+  }
+}

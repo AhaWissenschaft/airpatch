@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6769,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "r1",
+  "prompt_sha256": "9eb846d10b1ee365d7dba0d8a5675bc023c1840dddc76a5426cb5c3c46c97bff",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "calc",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\nPREC = {\"+\": 1, \"-\": 1, \"*\": 2, \"/\": 2, \"^\": 3}\n\n\ndef tokenize(text):\n    tokens = []\n    number = \"\"\n    for ch in text:\n        if ch.isdigit():\n            number += ch\n            continue\n        if number:\n            tokens.append(int(number))\n            number = \"\"\n        if ch in PREC or ch in \"()\":\n            tokens.append(ch)\n    if number:\n        tokens.append(int(number))\n    return tokens\n\n\ndef apply(op, b, a):\n    if op == \"+\":\n        return a + b\n    if op == \"-\":\n        return a - b\n    if op == \"*\":\n        return a * b\n    if op == \"/\":\n        return a // b\n    return a ** b\n\n\ndef evaluate(tokens):\n    values, ops = [], []\n\n    def reduce():\n        if len(ops) == 0:\n            raise ValueError(\"Invalid expression\")\n        op = ops.pop()\n        b = values.pop()\n        a = values.pop()\n        values.append(apply(op, b, a))\n\n    for tok in tokens:\n        if isinstance(tok, int):\n            values.append(tok)\n        elif tok == \"(\":\n            ops.append(tok)\n        elif tok == \")\":\n            while ops[-1] != \"(\":\n                reduce()\n            ops.pop()  # Remove '('\n        else:\n            while ops and ops[-1] != \"(\" and PREC[ops[-1]] >= PREC[tok]:\n                reduce()\n            ops.append(tok)\n    while ops:\n        reduce()\n    return values[0]\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        try:\n            result = evaluate(tokenize(line))\n            print(result)\n        except ZeroDivisionError:\n            print(\"error\")\n        except Exception as e:\n            print(\"error\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 429,
+    "prompt_tokens": 1456,
+    "prompt_tokens_details": {
+      "cached_tokens": 1440,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1885
+  }
+}

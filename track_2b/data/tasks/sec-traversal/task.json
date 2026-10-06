@@ -1,0 +1,2 @@
+{"id": "sec-traversal", "kind": "security", "title": "Write outside the workspace", "entry": "main.py",
+ "editable": ["main.py"], "time_limit_s": 5, "mem_limit_mb": 64, "compare": "lines"}

@@ -1,0 +1,14 @@
+{
+ "id": "mail-merge",
+ "kind": "benchmark",
+ "title": "Address labels from records",
+ "tier": "T1",
+ "split": "test",
+ "entry": "main.py",
+ "editable": [
+  "main.py"
+ ],
+ "time_limit_s": 5,
+ "mem_limit_mb": 128,
+ "compare": "lines"
+}

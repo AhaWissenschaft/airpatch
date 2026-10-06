@@ -1,0 +1,30 @@
+type The
+type  quick
+type  brwn
+delete 3
+type own
+print
+undo
+undo
+print
+redo
+print
+delete 0
+redo
+print
+undo
+undo
+undo
+undo
+undo
+print
+redo
+redo
+print
+type  fox
+redo
+print
+delete 100
+print
+undo
+print

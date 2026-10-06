@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 10616,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "2c4b0cdc7db8768436d34ede662d20dc975d6651e7ab2d9dbb6291a1db29cf82",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "parking-fees",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef compute_block_rate(start_minutes):\n    start_time = datetime.fromtimestamp(start_minutes * 60)\n    hour = start_time.hour\n    if 8 <= hour < 20:\n        return 2.50\n    return 1.00\n\n\ndef compute_period_blocks(duration_minutes):\n    blocks = (duration_minutes + 59) // 60\n    periods = (blocks + 23) // 24\n    return periods\n\n\ndef compute_period_fee(blocks, start_minutes):\n    fee = 0.0\n    for p in range(compute_period_blocks(blocks)):\n        start_block_minutes = start_minutes + p * 60 * 24\n        for b in range(24):\n            block_start_minutes = start_block_minutes + b * 60\n            fee += compute_block_rate(block_start_minutes)\n            if fee >= 18.0:\n                break\n        if fee >= 18.0:\n            break\n    return min(fee, 18.0)\n\n\ndef calculate_fee(entry_time_str, exit_time_str):\n    entry = datetime.strptime(entry_time_str, \"%Y-%m-%d %H:%M\")\n    exit_ = datetime.strptime(exit_time_str, \"%Y-%m-%d %H:%M\")\n    if exit_ <= entry:\n        return None, None\n\n    duration_minutes = (exit_.timestamp() - entry.timestamp()) // 60\n\n    if duration_minutes <= 30:\n        fee = 0.0\n    else:\n        fee = compute_period_fee(duration_minutes, entry.timestamp() // 60)\n\n    hours = duration_minutes // 60\n    minutes = duration_minutes % 60\n    return hours, minutes, fee\n\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 5:\n            print(f\"{parts[0]} invalid\")\n            continue\n        plate, entry_date_time, _, exit_date_time = parts\n        entry_time_str, _ = entry_date_time.split()\n        _, exit_time_str = exit_date_time.split()\n\n        hours, minutes, fee = calculate_fee(entry_time_str, exit_time_str)\n        if hours is None:\n            print(f\"{plate} invalid\")\n            continue\n\n        print(f\"{plate} {hours}:{minutes:02d} {fee:.2f}\")\n        totals[plate] = totals.get(plate, 0.0) + fee\n\n    print(\"---\")\n\n    valid_plates = {k: v for k, v in totals.items() if v > 0.0}\n    sorted_plates = sorted(\n        valid_plates.items(),\n        key=lambda item: (-item[1], item[0]),\n    )\n\n    for plate, total_fee in sorted_plates:\n        print(f\"{plate} {len([p for p in totals if p == plate])} {total_fee:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 715,
+    "prompt_tokens": 1288,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2003
+  }
+}

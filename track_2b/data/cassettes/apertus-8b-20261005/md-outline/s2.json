@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2251,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "cf2b1a9cb085c1de287e5a20c54e77ba3aca12197097e155cea0d4afde92c6bc",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "md-outline",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nimport re\n\n\ndef main():\n    counters = [0] * 6\n    slug_counter = {}\n    for line in sys.stdin:\n        line = line.rstrip(\"\\n\")\n        if not line.startswith(\"#\"):\n            continue\n        level = len(line) - len(line.lstrip(\"#\"))\n        if level < 1 or level > 6:\n            continue\n        text = line[level:].strip()\n        text = re.sub(r'^\\s*#+\\s*', '', text)\n        if text == \"\":\n            continue\n        counters[level - 1] += 1\n        for i in range(level, 6):\n            counters[i] = 0\n        number = \".\".join(str(c) for c in counters[:level])\n        slug = text.lower().replace(\" \", \"-\")\n        slug_clean = re.sub(r'[^a-z0-9\\-]', '', slug)\n        slug_counter[(slug,)] = 0\n        while True:\n            slug_with_suffix = slug + \"-\" + str(slug_counter[(slug,)])\n            if slug_with_suffix not in slug_counter:\n                slug_counter[(slug,)] = 1\n                break\n            slug_counter[(slug,)] += 1\n        print(\"  \" * (level - 1) + f\"{number} {text} (#{slug_with_suffix})\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 312,
+    "prompt_tokens": 935,
+    "prompt_tokens_details": {
+      "cached_tokens": 928,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1247
+  }
+}

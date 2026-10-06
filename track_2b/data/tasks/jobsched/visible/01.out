@@ -1,0 +1,4 @@
+backup 0 5
+report 5 8
+email 8 9
+idle 0

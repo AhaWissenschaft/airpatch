@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 9259,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "550976c597950f59de27444aed4f9479467cf8f22572588a9d98918d3f9df5f8",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "room-booking",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime, timedelta\n\n\ndef parse_time(s: str) -> datetime:\n    return datetime.strptime(s, \"%H:%M\")\n\n\ndef overlaps(a_start: datetime, a_end: datetime, b_start: datetime, b_end: datetime) -> bool:\n    return a_start < b_end and b_start < a_end\n\n\ndef main():\n    bookings = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if parts[0] == \"book\":\n            if len(parts) != 6:\n                continue\n            bid, room, day, start_str, end_str = parts[1], parts[2], parts[3], parts[4], parts[5]\n            try:\n                start = parse_time(start_str)\n                end = parse_time(end_str)\n            except ValueError:\n                print(f\"INVALID {bid}\")\n                continue\n            if end <= start:\n                print(f\"INVALID {bid}\")\n                continue\n            conflict = None\n            for other_bid, other_room, other_day, other_start, other_end in bookings:\n                if other_room == room and other_day == day and overlaps(\n                    start, end, other_start, other_end\n                ):\n                    if conflict is None or other_start < bookings[conflict][3]:\n                        conflict = bookings.index((other_bid, other_room, other_day, other_start, other_end))\n            if conflict is not None:\n                print(f\"REJECT {bid} {bookings[conflict][0]}\")\n            else:\n                bookings.append((bid, room, day, start, end))\n                print(f\"ACCEPT {bid}\")\n        elif parts[0] == \"cancel\":\n            if len(parts) != 2:\n                continue\n            bid = parts[1]\n            new_bookings = []\n            found = False\n            for b in bookings:\n                if b[0] == bid:\n                    found = True\n                else:\n                    new_bookings.append(b)\n            if not found:\n                print(f\"UNKNOWN {bid}\")\n            else:\n                bookings = new_bookings\n                print(f\"CANCELLED {bid}\")\n        else:\n            continue\n\n    rooms = {}\n    for bid, room, day, start, end in bookings:\n        rooms[room] = rooms.get(room, 0) + 1\n        rooms[room] += (end - start).total_seconds() / 60\n\n    for room in sorted(rooms):\n        total_minutes = rooms[room]\n        hours = total_minutes // 60\n        minutes = total_minutes % 60\n        print(f\"{room} {rooms[room]} {f'{hours}:{minutes:02}'}\")\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 605,
+    "prompt_tokens": 1210,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1815
+  }
+}

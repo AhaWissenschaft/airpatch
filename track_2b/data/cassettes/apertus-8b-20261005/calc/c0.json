@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2472,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "17227da4ed1fc9b7d7df34872a88031aa30bceec92cbf1e7220bc133c2e6f9ed",
+  "recorded_at": "20261005T082204Z-8b",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "calc",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\nPREC = {\"+\": 1, \"-\": 1, \"*\": 2, \"/\": 2, \"^\": 3}\n\n\ndef tokenize(text):\n    tokens = []\n    number = \"\"\n    for ch in text:\n        if ch.isdigit():\n            number += ch\n            continue\n        if number:\n            tokens.append(int(number))\n            number = \"\"\n        if ch in PREC or ch in \"()\":\n            tokens.append(ch)\n    if number:\n        tokens.append(int(number))\n    return tokens\n\n\ndef apply(op, b, a):\n    if op == \"+\":\n        return a + b\n    if op == \"-\":\n        return a - b\n    if op == \"*\":\n        return a * b\n    if op == \"/\":\n        return a // b\n    return a ** b\n\n\ndef evaluate(tokens):\n    values, ops = [], []\n\n    def reduce():\n        values.append(apply(ops.pop(), values.pop(), values.pop()))\n\n    for tok in tokens:\n        if isinstance(tok, int):\n            values.append(tok)\n        elif tok == \"(\":\n            ops.append(tok)\n        elif tok == \")\":\n            while ops[-1] != \"(\":\n                reduce()\n            ops.pop()\n        else:\n            while ops and ops[-1] != \"(\" and PREC[ops[-1]] >= PREC[tok]:\n                reduce()\n            ops.append(tok)\n    while ops:\n        reduce()\n    return values[0]\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        try:\n            tokens = tokenize(line)\n            result = evaluate(tokens)\n            print(result)\n        except ZeroDivisionError:\n            print(\"error\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 386,
+    "prompt_tokens": 875,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1261
+  }
+}

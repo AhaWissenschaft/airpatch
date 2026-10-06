@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3320,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "354d59583897e542af4d8e2334bdec24d2b8671eaecc774072537a84d2253450",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "mail-merge",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    if not lines:\n        return\n    home = lines[0].split(\"=\")[1].strip()\n    labels = []\n    for raw in lines[1:]:\n        if not raw.strip():\n            continue\n        fields = raw.split(\";\")\n        title, first, last, street, postcode, city, country = (\n            [f.strip() for f in fields[:7]]\n        )\n\n        name_line = \" \".join(\n            [f for f in [title, first, last] if f] or [\"To the occupant\"]\n        )\n        labels.append([name_line, street, f\"{postcode} {city}\" if postcode or city else \"\", country.upper()])\n\n    if not labels:\n        return\n\n    for label in labels:\n        for line in label:\n            if line:\n                print(line)\n        print(\"---\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 215,
+    "prompt_tokens": 828,
+    "prompt_tokens_details": {
+      "cached_tokens": 800,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1043
+  }
+}

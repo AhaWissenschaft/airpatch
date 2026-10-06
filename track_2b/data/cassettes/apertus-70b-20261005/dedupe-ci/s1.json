@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1702,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "e43f4dc30001ef216fcc5c4971dc6255925e71fc73f141a9a6c130241ab9ba3e",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "dedupe-ci",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    seen = set()\n    for line in sys.stdin:\n        stripped = line.strip()\n        if not stripped:\n            continue\n        key = stripped.lower()\n        if key not in seen:\n            seen.add(key)\n            print(stripped)\n    # The sorted loop is unnecessary and would break input order\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 91,
+    "prompt_tokens": 434,
+    "prompt_tokens_details": {
+      "cached_tokens": 416,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 525
+  }
+}

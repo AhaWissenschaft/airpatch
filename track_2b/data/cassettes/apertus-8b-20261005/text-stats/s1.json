@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1575,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "47c5c37b10aae5c76f6d924123c002e68488b9b28241fce544044cda2ce96e0b",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "text-stats",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    paragraphs = [p for p in text.split(\"\\n\\n\") if p.strip()]\n    paragraphs_count = len(paragraphs)\n    sentences = []\n    for p in paragraphs:\n        sentences_in_para = re.split(r\"[.!?]+\", p)\n        for sentence in sentences_in_para:\n            stripped_sentence = sentence.strip()\n            if not stripped_sentence:\n                continue\n            if stripped_sentence.lower() in ['mr', 'mrs', 'dr', 'st']:\n                continue\n            sentences.append(stripped_sentence)\n    sentences_count = len(sentences)\n    words = re.findall(r\"[A-Za-z0-9'-]+\", text)\n    words_count = len(words)\n    longest_word = max(words, key=len) if words else \"-\"\n    print(\"paragraphs\", paragraphs_count)\n    print(\"sentences\", sentences_count)\n    print(\"words\", words_count)\n    print(\"longest\", longest_word)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 238,
+    "prompt_tokens": 790,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1028
+  }
+}

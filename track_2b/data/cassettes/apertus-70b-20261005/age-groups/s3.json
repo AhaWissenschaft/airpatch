@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5299,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "bde363196aeb41e456656104f1d30165e241ecbc6107cc0cefcd3ef325de4b7e",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "age-groups",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date\n\n\ndef parse(text):\n    y, m, d = map(int, text.split(\"-\"))\n    return date(y, m, d)\n\n\ndef main():\n    lines = [line.split() for line in sys.stdin if line.strip()]\n    ref_date = parse(lines[0][0])\n    age_counts = {\"child\": 0, \"teen\": 0, \"adult\": 0, \"senior\": 0}\n\n    for name, birth_str in lines[1:]:\n        birth_date = parse(birth_str)\n        current_year = ref_date.year\n        age = current_year - birth_date.year\n\n        # Check if birthday has passed in the current year\n        if ref_date.month > birth_date.month or \\\n           (ref_date.month == birth_date.month and ref_date.day >= birth_date.day):\n            age += 1\n        else:\n            age += 0\n\n        if age <= 12:\n            group = \"child\"\n        elif age <= 17:\n            group = \"teen\"\n        elif age <= 64:\n            group = \"adult\"\n        else:\n            group = \"senior\"\n\n        age_counts[group] += 1\n        print(f\"{name} {age} {group}\")\n\n    for group in [\"child\", \"teen\", \"adult\", \"senior\"]:\n        print(f\"{group} {age_counts[group]}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 318,
+    "prompt_tokens": 701,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1019
+  }
+}

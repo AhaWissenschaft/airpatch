@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2878,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "c0",
+  "prompt_sha256": "05f9911d0b28525f5799bc64d26b8839f16e1d2c5cf61d769189a1e0e016f263",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "factorize",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        n = int(line)\n        abs_n = abs(n)\n        sign = \"-\" if n < 0 else \"\"\n        factors = []\n\n        d = 2\n        while d * d <= abs_n:\n            count = 0\n            while abs_n % d == 0:\n                abs_n //= d\n                count += 1\n            if count > 0:\n                factors.append(f\"{d}^{count}\" if count > 1 else str(d))\n            d += 1\n\n        if abs_n > 1:\n            factors.append(str(abs_n))\n\n        print(f\"{sign}{n} = \" + \" * \".join(factors))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 185,
+    "prompt_tokens": 806,
+    "prompt_tokens_details": {
+      "cached_tokens": 736,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 991
+  }
+}

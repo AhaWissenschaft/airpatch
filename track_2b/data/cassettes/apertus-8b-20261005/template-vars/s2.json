@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 956,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "b7dd79e887e95a02333dcfa5767f7315ca3580b79a00117f391e778bcbef6a95",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "template-vars",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    head, _, body = text.partition(\"---\\n\")\n    variables = {}\n    for line in head.splitlines():\n        if \"=\" in line:\n            name, value = line.split(\"=\")\n            variables[name.strip()] = value.strip()\n    for name, value in variables.items():\n        body = body.replace(\"{\" + name + \"}\", value)\n    body = body.replace(\"{{\", \"{\").replace(\"}}\", \"}\")\n    sys.stdout.write(body)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 132,
+    "prompt_tokens": 680,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 812
+  }
+}

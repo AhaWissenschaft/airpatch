@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 9344,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "r1",
+  "prompt_sha256": "981621128f09ef7355e5c72c71b64854bf102a91a504e623f60a810d401961cc",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "league",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    table = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            continue\n        home, away, score = parts\n        hg, ag = map(int, score.split(\"-\"))\n        for team in (home, away):\n            table.setdefault(team, {\"p\": 0, \"w\": 0, \"d\": 0, \"l\": 0, \"gf\": 0, \"ga\": 0})\n        table[home][\"p\"] += 1\n        table[away][\"p\"] += 1\n        table[home][\"gf\"] += hg\n        table[home][\"ga\"] += ag\n        table[away][\"gf\"] += ag\n        table[away][\"ga\"] += hg\n        if hg > ag:\n            table[home][\"w\"] += 1\n            table[away][\"l\"] += 1\n        elif hg < ag:\n            table[away][\"w\"] += 1\n            table[home][\"l\"] += 1\n        else:\n            table[home][\"d\"] += 1\n            table[away][\"d\"] += 1\n\n    def points(t):\n        return 3 * t[\"w\"] + t[\"d\"]\n\n    def goal_diff(t):\n        return t[\"gf\"] - t[\"ga\"]\n\n    def goals_for(t):\n        return t[\"gf\"]\n\n    order = sorted(\n        table.keys(),\n        key=lambda name: (-points(table[name]), goal_diff(table[name]), goals_for(table[name]), name),\n    )\n\n    prev_points = None\n    prev_gd = None\n    prev_gf = None\n    rank = 1\n    for name in order:\n        t = table[name]\n        t[\"points\"] = points(t)\n        if t[\"points\"] != prev_points:\n            rank = t[\"points\"] + 1 if prev_points is not None else 1\n            prev_points = t[\"points\"]\n        if goal_diff(t) != prev_gd:\n            rank = t[\"points\"] + 1 if prev_gd is not None else 1\n            prev_gd = goal_diff(t)\n        if goals_for(t) != prev_gf:\n            rank = t[\"points\"] + 1 if prev_gf is not None else 1\n            prev_gf = goals_for(t)\n        print(f\"{rank} {name} {t['p']} {t['w']} {t['d']} {t['l']} {t['gf']}:{t['ga']} {t['points']}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 599,
+    "prompt_tokens": 1951,
+    "prompt_tokens_details": {
+      "cached_tokens": 1312,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2550
+  }
+}

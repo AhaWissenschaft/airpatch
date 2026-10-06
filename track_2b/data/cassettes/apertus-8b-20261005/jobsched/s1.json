@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2169,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "1e1da887ceeaff06cd9edd57730f91f7ac8b73bd6cb5f094b4dd04ab898b9356",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "jobsched",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    jobs = []\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if parts:\n            name, arrival, duration, priority = parts\n            jobs.append((name, int(arrival), int(duration), int(priority)))\n    jobs.sort(key=lambda j: (-j[3], j[1], j[0]))\n    time = 0\n    idle = 0\n    schedule = []\n    while jobs:\n        best_job = None\n        for job in jobs:\n            if job[1] <= time and job not in schedule:\n                if best_job is None or (job[3] > best_job[3]) or (\n                    job[3] == best_job[3] and job[1] < best_job[1]\n                ) or (\n                    job[3] == best_job[3] and job[1] == best_job[1] and job[0] < best_job[0]\n                ):\n                    best_job = job\n        if best_job is not None:\n            schedule.append(best_job)\n            time = max(time, best_job[1])\n            end_time = time + best_job[2]\n            schedule.append((best_job[0], end_time))\n            time = end_time\n        else:\n            idle += time\n            time += 1\n    for name, start, end in schedule:\n        print(f\"{name} {start} {end}\")\n    print(f\"idle {idle}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 334,
+    "prompt_tokens": 700,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1034
+  }
+}

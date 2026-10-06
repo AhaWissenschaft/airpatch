@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3164,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "c7c366787c4557402bdd4a732dc469b8d103018ddea6c6518d6ab0c418ac879a",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "room-booking",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\ndef parse_time(time_str):\n    h, m = map(int, time_str.split(':'))\n    return datetime.combine(datetime.min, datetime.min.time()) + timedelta(hours=h, minutes=m)\n\n\ndef main():\n    bookings = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if parts[0] == \"book\":\n            bid, room, day, start, end = parts[1:]\n            start_time = parse_time(start)\n            end_time = parse_time(end)\n            if end_time <= start_time:\n                print(\"INVALID\", bid)\n                continue\n            conflict = None\n            for other_bid, other_room, other_day, other_start, other_end in bookings:\n                if other_room == room and other_day == day and other_start <= end_time and other_end >= start_time:\n                    conflict = other_bid\n                    break\n            if conflict:\n                print(\"REJECT\", bid, conflict)\n            else:\n                bookings.append((bid, room, day, start_time, end_time))\n                print(\"ACCEPT\", bid)\n        elif parts[0] == \"cancel\":\n            new_bookings = [b for b in bookings if b[0] != parts[1]]\n            bookings = new_bookings\n            print(\"CANCELLED\", parts[1])\n    rooms = {}\n    for bid, room, day, start_time, end_time in bookings:\n        rooms[room] = rooms.get(room, 0) + 1\n    for room in sorted(rooms):\n        active_bookings = [b for b in bookings if b[2] == day and b[1] == room]\n        total_minutes = sum((end_time - start_time).total_seconds() / 60 for start_time, end_time in zip(\n            [b[3] for b in active_bookings], [b[4] for b in active_bookings]\n        ))\n        hours = int(total_minutes // 60)\n        minutes = int(total_minutes % 60)\n        print(f\"{room} {len(active_bookings)} {f'{hours}:{minutes:02d}'}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 503,
+    "prompt_tokens": 1210,
+    "prompt_tokens_details": {
+      "cached_tokens": 1184,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1713
+  }
+}

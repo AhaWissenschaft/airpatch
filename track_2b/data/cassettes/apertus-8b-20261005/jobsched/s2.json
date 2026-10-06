@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1537,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "1e1da887ceeaff06cd9edd57730f91f7ac8b73bd6cb5f094b4dd04ab898b9356",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "jobsched",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    jobs = []\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if parts:\n            name, arrival, duration, priority = parts\n            jobs.append((name, int(arrival), int(duration), int(priority)))\n    jobs.sort(key=lambda j: (-j[3], j[1], j[0]))\n    time = 0\n    idle = 0\n    scheduled = []\n    while jobs:\n        candidates = [job for job in jobs if job[1] <= time]\n        if not candidates:\n            idle += time - (scheduled[-1][1] if scheduled else 0)\n            time += 1\n            continue\n        best = max(candidates, key=lambda x: (-x[3], x[1], x[0]))\n        scheduled.append(best)\n        time = best[1]\n        print(best[0], time, time + best[2])\n    print(\"idle\", idle)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 230,
+    "prompt_tokens": 700,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 930
+  }
+}

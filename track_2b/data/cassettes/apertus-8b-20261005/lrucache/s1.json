@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1333,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "e1a9dc7749ee70888300a4eb156c08cffeb80d041ce974bfac3f567952222e14",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "lrucache",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom collections import OrderedDict\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    capacity = int(lines[0])\n    cache = OrderedDict()\n    for line in lines[1:]:\n        parts = line.split()\n        if not parts:\n            continue\n        if parts[0] == \"put\":\n            key = parts[1]\n            value = parts[2]\n            if len(cache) >= capacity:\n                evicted_key = cache.popitem(last=False)[0]\n                print(\"evict\", evicted_key)\n            cache[key] = value\n        elif parts[0] == \"get\":\n            print(cache.get(parts[1], \"miss\"))\n        elif parts[0] == \"dump\":\n            if not cache:\n                print(\"empty\")\n            else:\n                print(\" \".join(cache.keys()))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 199,
+    "prompt_tokens": 598,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 797
+  }
+}

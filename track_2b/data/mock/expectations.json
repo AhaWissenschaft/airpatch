@@ -1,0 +1,20 @@
+{
+ "brackets": "FAIL_TESTS",
+ "csvsum": "PASS",
+ "daysbetween": "PASS",
+ "intervals": "MALFORMED_PROPOSAL",
+ "inventory": "FAIL_TESTS",
+ "repair_final": {
+  "brackets": "PASS",
+  "intervals": "MALFORMED_PROPOSAL",
+  "inventory": "FAIL_TESTS",
+  "wordfreq": "PASS",
+  "wrap": "PASS"
+ },
+ "rle": "PASS",
+ "roman": "FAIL_TESTS",
+ "spiral": "TIMEOUT",
+ "versions": "PASS",
+ "wordfreq": "PASS",
+ "wrap": "BUILD_ERROR"
+}

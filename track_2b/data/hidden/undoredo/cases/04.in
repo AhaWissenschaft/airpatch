@@ -1,0 +1,5 @@
+type a
+undo
+delete 5
+redo
+print

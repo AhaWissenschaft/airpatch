@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2865,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "2c4b0cdc7db8768436d34ede662d20dc975d6651e7ab2d9dbb6291a1db29cf82",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "parking-fees",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\ndef calculate_blocks_and_price(duration_minutes):\n    blocks = duration_minutes // 60 + 1\n    price = min(blocks * 2.5, 18.0)\n    return blocks, price\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) < 4:\n            print(line.split()[0], \"invalid\")\n            continue\n        plate = parts[0]\n        entry_date, entry_time = parts[1], parts[2]\n        exit_date, exit_time = parts[3], parts[4]\n        entry_dt = datetime.strptime(f\"{entry_date} {entry_time}\", \"%Y-%m-%d %H:%M\")\n        exit_dt = datetime.strptime(f\"{exit_date} {exit_time}\", \"%Y-%m-%d %H:%M\")\n        if exit_dt <= entry_dt:\n            print(plate, \"invalid\")\n            continue\n        duration = (exit_dt - entry_dt).total_seconds() / 60\n        if duration <= 30:\n            fee = 0.0\n        else:\n            blocks, fee = calculate_blocks_and_price(duration)\n        totals[plate] = totals.get(plate, 0) + fee\n        print(f\"{plate} {(duration // 60):01d}:{(duration % 60):02d} {fee:.2f}\")\n    print(\"---\")\n    for plate in sorted(totals, key=lambda x: (-totals[x], x)):\n        print(plate, f\"{totals[plate]:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 413,
+    "prompt_tokens": 1288,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1701
+  }
+}

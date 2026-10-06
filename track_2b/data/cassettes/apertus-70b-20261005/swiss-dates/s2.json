@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6100,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "b6abcf9cfc7530905d56e47ff2ba1fe5be6f865da0254373e9c7b28e7388807a",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "swiss-dates",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\nfrom datetime import date\n\nSWISS = re.compile(r\"([0-9]{1,2})\\.([0-9]{1,2})\\.([0-9]{4})\")\nISO = re.compile(r\"([0-9]{4})-([0-9]{2})-([0-9]{2})\")\n\n\ndef is_leap(year):\n    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)\n\n\ndef plausible(y, m, d):\n    if m < 1 or m > 12:\n        return False\n    if d < 1 or d > 31:\n        return False\n    if m == 2 and d == 29:\n        return is_leap(y)\n    if m in [4, 6, 9, 11] and d > 30:\n        return False\n    return True\n\n\ndef convert(text):\n    m_swiss = SWISS.fullmatch(text)\n    m_iso = ISO.fullmatch(text)\n\n    if m_swiss:\n        d, mo, y = map(int, m_swiss.groups())\n        if plausible(y, mo, d):\n            return f\"{y:04d}-{mo:02d}-{d:02d}\"\n        return \"invalid\"\n\n    if m_iso:\n        y, mo, d = map(int, m_iso.groups())\n        if plausible(y, mo, d):\n            return f\"{d:02d}.{mo:02d}.{y:04d}\"\n        return \"invalid\"\n\n    return \"invalid\"\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if line:\n            print(convert(line))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 406,
+    "prompt_tokens": 835,
+    "prompt_tokens_details": {
+      "cached_tokens": 832,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1241
+  }
+}

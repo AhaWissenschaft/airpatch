@@ -1,0 +1,14 @@
+{
+ "id": "wrap",
+ "kind": "benchmark",
+ "title": "Greedy word wrap",
+ "tier": "T3",
+ "split": "dev",
+ "entry": "main.py",
+ "editable": [
+  "main.py"
+ ],
+ "time_limit_s": 5,
+ "mem_limit_mb": 128,
+ "compare": "lines"
+}

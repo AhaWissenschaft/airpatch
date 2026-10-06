@@ -1,0 +1,29 @@
+{
+  "candidate": "r2",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1477,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "r1",
+  "prompt_sha256": "84871b7564fe7ac4be14b58e5768cd69b231d64a2efcdcc2a833afdfa3c04d40",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "factorize",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef factorize(n):\n    factors = []\n    m = abs(n)\n    if m == 0:\n        return \"-1\"\n    if m == 1:\n        return \"1\"\n    d = 2\n    while d * d <= m:\n        count = 0\n        while m % d == 0:\n            m //= d\n            count += 1\n        if count:\n            factors.append(f\"{d}^{count}\")\n        d += 1\n    if m > 1:\n        factors.append(f\"{m}\")\n    if n < 0:\n        return \"-1 * \" + \" * \".join(factors)\n    else:\n        return \" = \" + \" * \".join(factors)\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        n = int(line)\n        print(f\"{n} = {factorize(n)}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 218,
+    "prompt_tokens": 923,
+    "prompt_tokens_details": {
+      "cached_tokens": 896,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1141
+  }
+}

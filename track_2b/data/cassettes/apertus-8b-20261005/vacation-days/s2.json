@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2245,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "59a89ad6936d5d79902a14b0fb5748002827094ac3351ac2df8a4cd06d657e6a",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "vacation-days",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta\n\n\ndef parse(text):\n    y, m, d = map(int, text.split(\"-\"))\n    return date(y, m, d)\n\n\ndef is_weekday(date_obj):\n    return date_obj.weekday() < 5\n\n\ndef main():\n    holidays = set()\n    allowance = {}\n    used = {}\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if not parts:\n            continue\n        if parts[0] == \"holiday\":\n            holidays.add(parse(parts[1]))\n        elif parts[0] == \"allowance\":\n            allowance[parts[1]] = int(parts[2])\n        elif parts[0] == \"leave\":\n            first, last = parse(parts[2]), parse(parts[3])\n            if first > last:\n                continue\n            count = 0\n            current = first\n            while current <= last:\n                if current in holidays:\n                    current += timedelta(days=1)\n                    continue\n                if is_weekday(current):\n                    count += 1\n                current += timedelta(days=1)\n            used[parts[1]] = used.get(parts[1], 0) + count\n    for name in sorted(used):\n        u = used[name]\n        a = allowance.get(name, 0)\n        if u <= a:\n            print(f\"{name} used {u} left {a - u}\")\n        else:\n            print(f\"{name} used {u} over {u - a}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 345,
+    "prompt_tokens": 928,
+    "prompt_tokens_details": {
+      "cached_tokens": 896,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1273
+  }
+}

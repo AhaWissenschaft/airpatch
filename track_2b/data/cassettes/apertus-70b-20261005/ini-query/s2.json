@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6466,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "319656a01987dfa350212433d88f6af642573bad63dc08c3d888ce971c46d4ef",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "ini-query",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    config, _, queries = text.partition(\"===\\n\")\n    data = {}\n    current_section = \"\"  # global section initially\n\n    for line in config.splitlines():\n        line = line.strip()\n        if not line or line.startswith(\";\"):\n            continue\n        if line.startswith(\"[\"):\n            section_name = line[1:-1].strip()\n            current_section = section_name.lower()\n            data.setdefault(current_section, {})\n        elif \"=\" in line:\n            key, value = line.split(\"=\", 1)\n            key = key.strip().lower()\n            raw_value = value.strip()\n\n            if raw_value.startswith('\"'):\n                # Quoted value: extract between quotes\n                end_quote = raw_value.find('\"', 1)\n                if end_quote != -1:\n                    value = raw_value[1 : end_quote]\n                else:\n                    value = \"\"\n            else:\n                # Parse comments: remove everything after first ; or # not following space\n                comment_pos = raw_value.find(';')\n                if comment_pos != -1:\n                    value = raw_value[:comment_pos].rstrip()\n                else:\n                    comment_pos = raw_value.find('#')\n                    if comment_pos != -1:\n                        value = raw_value[:comment_pos].rstrip()\n\n            data[current_section].setdefault(key, \"\")  # use empty string for missing keys\n            data[current_section][key] = value\n\n    for query_line in queries.splitlines():\n        query_line = query_line.strip()\n        if not query_line:\n            continue\n        parts = query_line.split(\".\", 1)\n        if len(parts) != 2:\n            print(\"NOT FOUND\")\n            continue\n        section, key = parts\n\n        section = section.lower()\n        key = key.lower()\n\n        value = data.get(section, {}).get(key, \"NOT FOUND\")\n        print(value)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 429,
+    "prompt_tokens": 965,
+    "prompt_tokens_details": {
+      "cached_tokens": 960,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1394
+  }
+}

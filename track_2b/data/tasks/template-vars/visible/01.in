@@ -1,0 +1,6 @@
+# site settings
+title = Price list
+url = https://example.org/?page=1
+---
+{title} ({url})
+Use {{ and }} for literal braces.

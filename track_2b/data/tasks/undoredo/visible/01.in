@@ -1,0 +1,11 @@
+type hello
+type  world
+print
+undo
+print
+redo
+print
+undo
+undo
+redo
+print

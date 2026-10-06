@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2202,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "a204b7a75fd3b08b56fa174f3f5bb5b6eb080377566f64ab44ca10bbd9168ce9",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "deccalc",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom decimal import Decimal\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        a_str, op, b_str = line.split()\n        a = Decimal(a_str)\n        b = Decimal(b_str)\n        if op == \"+\":\n            result = a + b\n        elif op == \"-\":\n            result = a - b\n        elif op == \"*\":\n            result = a * b\n        else:  # op == '/'\n            if b == 0:\n                print(\"ERROR\")\n                continue\n            result = round(a / b, 10)\n        # Formatting the output\n        if result == 0:\n            print(\"0\")\n        else:\n            s = str(result)\n            if \".\" in s:\n                integer_part, fractional_part = s.split(\".\", 1)\n            else:\n                integer_part = s\n                fractional_part = \"\"\n            if fractional_part and fractional_part[-1] == \"0\":\n                fractional_part = fractional_part[:-1]\n            if integer_part and integer_part[0] == \"0\" and len(integer_part) > 1:\n                integer_part = integer_part[1:]\n            if not integer_part:\n                print(f\"0.{fractional_part}\")\n            else:\n                print(f\"{integer_part}.{fractional_part}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 307,
+    "prompt_tokens": 597,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 904
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 7655,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "parent": "c0",
+  "prompt_sha256": "4ee6733ded0e63ca9a6ddba2535a179f77beb6e158845d42700e66711662f1f5",
+  "recorded_at": "20261005T075518Z-19745",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "numwords",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\nONES = [\"\", \"one\", \"two\", \"three\", \"four\", \"five\", \"six\", \"seven\", \"eight\", \"nine\", \"ten\",\n        \"eleven\", \"twelve\", \"thirteen\", \"fourteen\", \"fifteen\", \"sixteen\", \"seventeen\",\n        \"eighteen\", \"nineteen\"]\nTENS = [\"\", \"\", \"twenty\", \"thirty\", \"forty\", \"fifty\", \"sixty\", \"seventy\", \"eighty\", \"ninety\"]\nSCALES = [\"\", \" thousand\", \" million\", \" billion\", \" trillion\"]\n\ndef below_thousand(n):\n    words = \"\"\n    if n >= 100:\n        hundred = n // 100\n        words += ONES[hundred] + \" hundred \"\n        n %= 100\n    if n >= 20:\n        ten = n // 10\n        words += TENS[ten] + \" \"\n        n %= 10\n    if n > 0:\n        words += ONES[n]\n    return words.strip()\n\ndef to_words(n):\n    if n == 0:\n        return \"zero\"\n    sign = \"\"\n    if n < 0:\n        sign = \"minus \"\n        n = -n\n    num_str = str(n).lstrip('0')\n    if not num_str:\n        return \"zero\"\n    words = below_thousand(int(num_str))\n    scale = 0\n    while len(num_str) > 3:\n        chunk = num_str[-3:]\n        chunk_num = int(chunk)\n        words = below_thousand(chunk_num) + SCALES[scale] + \" \" + words\n        num_str = num_str[:-3]\n        scale += 1\n    if num_str:\n        words = below_thousand(int(num_str)) + \" \" + words\n    return sign + words.strip()\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if line:\n            try:\n                print(to_words(int(line)))\n            except ValueError:\n                print(\"Error: invalid input\")  # Handle non-integer input\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 491,
+    "prompt_tokens": 1686,
+    "prompt_tokens_details": {
+      "cached_tokens": 1344,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2177
+  }
+}

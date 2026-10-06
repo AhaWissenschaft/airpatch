@@ -1,0 +1,4 @@
+user_1=ann
+x=1
+---
+{user_1}{user_1}-{x}

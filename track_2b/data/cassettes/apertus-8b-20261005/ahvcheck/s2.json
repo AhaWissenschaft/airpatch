@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2279,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "417daedb17a0c18a33d6f96eafccc448260fe10d688169a070993696c5fd269e",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "ahvcheck",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef check_digit(digits):\n    total = 0\n    for i, ch in enumerate(digits):\n        if i % 2 == 0:\n            total += int(ch) * 3\n        else:\n            total += int(ch)\n    return 10 - total % 10\n\n\ndef fmt(digits):\n    return f\"{digits[0:3]}.{digits[3:7]}.{digits[7:11]}.{digits[11:13]}\"\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        digits = line.replace(\".\", \"\").replace(\" \", \"\")\n        if len(digits) != 13 and len(digits) != 12:\n            print(\"ERROR\")\n            continue\n        if len(digits) == 13:\n            if digits.startswith(\"756\"):\n                if check_digit(digits[:12]) == int(digits[12]):\n                    print(\"VALID\", fmt(digits))\n                else:\n                    print(\"INVALID\", check_digit(digits[:12]))\n            else:\n                print(\"ERROR\")\n        elif len(digits) == 12:\n            if digits.startswith(\"756\"):\n                print(\"COMPLETE\", fmt(digits + str(check_digit(digits))))\n            else:\n                print(\"ERROR\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 318,
+    "prompt_tokens": 962,
+    "prompt_tokens_details": {
+      "cached_tokens": 960,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1280
+  }
+}

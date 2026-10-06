@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2929,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "a0b8d0df764ebbf7e275cef9eb19aa06ffffa58044993019dfcf850e4dd2a03b",
+  "recorded_at": "20261005T082204Z-8b",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "numwords",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\nONES = [\"\", \"one\", \"two\", \"three\", \"four\", \"five\", \"six\", \"seven\", \"eight\", \"nine\", \"ten\",\n        \"eleven\", \"twelve\", \"thirteen\", \"fourteen\", \"fifteen\", \"sixteen\", \"seventeen\",\n        \"eighteen\", \"nineteen\"]\nTENS = [\"\", \"\", \"twenty\", \"thirty\", \"forty\", \"fifty\", \"sixty\", \"seventy\", \"eighty\", \"ninety\"]\nSCALES = [\"\", \" thousand\", \" million\", \" billion\", \" trillion\"]\n\ndef below_thousand(n):\n    words = \"\"\n    if n >= 100:\n        words += ONES[n // 100] + \" hundred \"\n        n %= 100\n    if n >= 20:\n        words += TENS[n // 10] + \" \"\n        n %= 10\n    words += ONES[n]\n    return words.strip()\n\n\ndef to_words(n):\n    if n == 0:\n        return \"zero\"\n    words = \"\"\n    scale = 0\n    while n > 0:\n        group = n % 1000\n        words_group = below_thousand(group)\n        if words_group:\n            words = words_group + SCALES[scale] + \" \" + words\n        n //= 1000\n        scale += 1\n    return words.strip()\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        sign = 1\n        if line.startswith(\"-\"):\n            sign = -1\n            num_str = line[1:]\n        else:\n            num_str = line\n        n = int(num_str) * sign\n        if n == 0:\n            print(\"zero\")\n        else:\n            words = to_words(abs(n))\n            if sign == -1:\n                words = \"minus \" + words\n            print(words)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 459,
+    "prompt_tokens": 919,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1378
+  }
+}

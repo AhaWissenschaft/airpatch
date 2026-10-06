@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5998,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "59a89ad6936d5d79902a14b0fb5748002827094ac3351ac2df8a4cd06d657e6a",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "vacation-days",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import date, timedelta\n\n\ndef parse(text):\n    y, m, d = map(int, text.split(\"-\"))\n    return date(y, m, d)\n\n\ndef main():\n    holidays = set()\n    allowance = {}\n    used = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if not parts:\n            continue\n        if parts[0] == \"holiday\":\n            holidays.add(parse(parts[1]))\n        elif parts[0] == \"allowance\":\n            allowance[parts[1]] = int(parts[2])\n        elif parts[0] == \"leave\":\n            if len(parts) < 4:\n                continue\n            name = parts[1]\n            from_date_str = parts[2]\n            to_date_str = parts[3]\n            from_date = parse(from_date_str)\n            to_date = parse(to_date_str)\n            if from_date > to_date:\n                continue\n            count = 0\n            current_date = from_date\n            while current_date <= to_date:\n                if current_date.weekday() < 5 and current_date not in holidays:\n                    count += 1\n                current_date += timedelta(days=1)\n            used[name] = used.get(name, 0) + count\n    for name in sorted(used.keys()):\n        u = used[name]\n        a = allowance.get(name, 0)\n        if u <= a:\n            l = a - u\n            print(f\"{name} used {u} left {l}\")\n        else:\n            o = u - a\n            print(f\"{name} used {u} over {o}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 381,
+    "prompt_tokens": 928,
+    "prompt_tokens_details": {
+      "cached_tokens": 896,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1309
+  }
+}

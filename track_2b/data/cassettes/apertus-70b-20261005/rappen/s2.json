@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 1482,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "3128fe7c5fb45e2d1dbccab04ee1459003e8d051e98f735a91f1f84a6c96d2d6",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "rappen",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        try:\n            amount = float(line)\n        except ValueError:\n            continue\n        rounded = round(amount * 20) / 20\n        print(f\"{rounded:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 91,
+    "prompt_tokens": 566,
+    "prompt_tokens_details": {
+      "cached_tokens": 544,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 657
+  }
+}

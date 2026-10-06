@@ -1,0 +1,10 @@
+[ui]
+color = #ff0000
+link = http://example.org/#top
+path = C:/tools;D:/bin
+note = keep # this part?
+===
+ui.color
+ui.link
+ui.path
+ui.note

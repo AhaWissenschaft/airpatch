@@ -1,0 +1,12 @@
+[q]
+a = "  spaced  "
+b = "x;y" ; comment
+c = ""
+d = "#hash"
+e = say "hi"
+===
+q.a
+q.b
+q.c
+q.d
+q.e

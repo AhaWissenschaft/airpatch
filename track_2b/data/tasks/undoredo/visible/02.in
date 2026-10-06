@@ -1,0 +1,8 @@
+type abc
+delete 2
+print
+type xyz
+print
+undo
+undo
+print

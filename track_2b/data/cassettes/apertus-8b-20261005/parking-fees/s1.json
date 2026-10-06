@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2993,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "2c4b0cdc7db8768436d34ede662d20dc975d6651e7ab2d9dbb6291a1db29cf82",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "parking-fees",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\ndef parse_time(time_str):\n    h, m = time_str.split(\":\")\n    return int(h) * 60 + int(m)\n\ndef calculate_fee(duration_minutes):\n    if duration_minutes <= 30:\n        return 0.0\n    blocks = duration_minutes // 60 + 1\n    price_per_block = 2.5 if 800 <= blocks * 60 <= 19*60 else 1.0\n    total_blocks_price = min(blocks * price_per_block, 18.0)\n    return total_blocks_price\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) < 4:\n            print(f\"{parts[0]} invalid\")\n            continue\n        plate, entry_date, entry_time, leave_date, leave_time = parts\n        try:\n            entry_time_int = parse_time(entry_time)\n            leave_time_int = parse_time(leave_time)\n            entry_datetime = datetime.strptime(f\"{entry_date} {entry_time}\", \"%Y-%m-%d %H:%M\")\n            leave_datetime = datetime.strptime(f\"{leave_date} {leave_time}\", \"%Y-%m-%d %H:%M\")\n        except:\n            print(f\"{plate} invalid\")\n            continue\n        duration = (leave_datetime - entry_datetime).total_seconds() / 60\n        if duration < 0:\n            print(f\"{plate} invalid\")\n            continue\n        fee = calculate_fee(duration)\n        totals[plate] = totals.get(plate, 0) + fee\n        duration_h = duration // 60\n        duration_m = duration % 60\n        print(f\"{plate} {duration_h}:{duration_m:02d} {fee:.2f}\")\n    print(\"---\")\n    for plate in sorted(totals, key=lambda x: (-totals[x], x)):\n        print(f\"{plate} {totals[plate]:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 471,
+    "prompt_tokens": 1288,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1759
+  }
+}

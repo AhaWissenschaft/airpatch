@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 8679,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "2c4b0cdc7db8768436d34ede662d20dc975d6651e7ab2d9dbb6291a1db29cf82",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "parking-fees",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\n\ndef minutes(text):\n    return int(text.split(\":\")[0]) * 60 + int(text.split(\":\")[1])\n\n\ndef is_peak_hour(start_time):\n    h = int(start_time.split(\":\")[0])\n    m = int(start_time.split(\":\")[1])\n    return 8 <= h <= 19 and m >= 0\n\n\ndef compute_fee(duration_minutes):\n    if duration_minutes <= 30:\n        return 0.0\n    blocks = (duration_minutes + 59) // 60\n    fee = blocks * 2.50\n    if fee > 18.00:\n        fee = 18.00\n    return fee\n\n\ndef process_stay(line):\n    parts = line.split()\n    if len(parts) != 5:\n        print(f\"{parts[0]} invalid\")\n        return\n\n    plate = parts[0]\n    entry_str = parts[1] + \" \" + parts[2]\n    exit_str = parts[3] + \" \" + parts[4]\n\n    try:\n        entry = datetime.strptime(entry_str, \"%Y-%m-%d %H:%M\")\n        exit_time = datetime.strptime(exit_str, \"%Y-%m-%d %H:%M\")\n    except ValueError:\n        print(f\"{plate} invalid\")\n        return\n\n    if exit_time <= entry:\n        print(f\"{plate} invalid\")\n        return\n\n    duration = (exit_time - entry).total_seconds() / 60\n    if duration < 0:\n        print(f\"{plate} invalid\")\n        return\n\n    fee = compute_fee(duration)\n\n    print(f\"{plate} {int(duration):02d}:{int((duration % 1)*60):02d} {fee:.2f}\")\n\n    totals[plate] = totals.get(plate, 0.0) + fee\n\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        process_stay(line)\n\n    print(\"---\")\n\n    valid_plates = {plate: total for plate, total in totals.items() if total > 0}\n    sorted_plates = sorted(\n        valid_plates.items(),\n        key=lambda x: (-x[1], x[0]),\n    )\n\n    for plate, total in sorted_plates:\n        print(f\"{plate} {len([p for p, t in valid_plates.items() if p == plate])} {total:.2f}\")\n\n\nif __name__ == \"__main__\":\n    totals = {}\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 570,
+    "prompt_tokens": 1288,
+    "prompt_tokens_details": {
+      "cached_tokens": 1280,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1858
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3045,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "c7c366787c4557402bdd4a732dc469b8d103018ddea6c6518d6ab0c418ac879a",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "room-booking",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\ndef parse_time(time_str):\n    h, m = map(int, time_str.split(':'))\n    return datetime.combine(datetime.min, datetime.time(h, m))\n\ndef format_time(duration):\n    hours, remainder = divmod(duration.total_seconds() / 3600, 1)\n    minutes = remainder // 60\n    return f\"{int(hours)}:{minutes:02d}\"\n\n\ndef main():\n    bookings = []\n    for line in sys.stdin:\n        parts = line.strip().split()\n        if not parts:\n            continue\n        if parts[0] == \"book\":\n            bid, room, day, start_str, end_str = parts[1:]\n            start = parse_time(start_str)\n            end = parse_time(end_str)\n            if end <= start:\n                print(\"INVALID\", bid)\n                continue\n            conflict = None\n            for other in bookings:\n                other_bid, other_room, other_day, other_start, other_end = other\n                if other_room == room and other_day == day and not (end <= other_start or start <= other_end):\n                    conflict = other_bid\n                    break\n            if conflict:\n                print(f\"REJECT {bid} {conflict}\")\n            else:\n                bookings.append((bid, room, day, start, end))\n                print(f\"ACCEPT {bid}\")\n        elif parts[0] == \"cancel\":\n            bookings = [b for b in bookings if b[0] != parts[1]]\n            print(f\"CANCELLED {parts[1]}\")\n    rooms = {}\n    for bid, room, day, start, end in bookings:\n        rooms[room] = rooms.get(room, 0) + 1\n    for room in sorted(rooms):\n        active = []\n        total = timedelta()\n        for bid, r, day, start, end in bookings:\n            if r == room and day == day and end > start:\n                total += end - start\n                active.append((bid, start, end))\n        count = len(active)\n        if count > 0:\n            print(f\"{room} {count} {format_time(total)}\")\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 481,
+    "prompt_tokens": 1210,
+    "prompt_tokens_details": {
+      "cached_tokens": 1184,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1691
+  }
+}

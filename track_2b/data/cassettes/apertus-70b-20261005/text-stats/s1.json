@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6173,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "47c5c37b10aae5c76f6d924123c002e68488b9b28241fce544044cda2ce96e0b",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "text-stats",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\n\n\ndef is_sentence_end(sentence_part, terminator):\n    terminator_len = len(terminator)\n    if terminator_len == 1 and terminator == \".\":\n        word_before = (\n            sentence_part.split()[-1]\n            if sentence_part.strip().split()\n            else \"\"\n        )\n        return word_before.lower() in {\"mr\", \"mrs\", \"dr\", \"st\"}\n    return True\n\n\ndef main():\n    text = sys.stdin.read()\n    paragraphs = []\n    paragraph = []\n    for line in text.splitlines():\n        stripped_line = line.strip()\n        if not stripped_line:\n            if paragraph:\n                paragraphs.append(\"\\n\".join(paragraph))\n                paragraph = []\n        else:\n            paragraph.append(line)\n    if paragraph:\n        paragraphs.append(\"\\n\".join(paragraph))\n\n    words = []\n    for paragraph_text in paragraphs:\n        sentence_parts = re.split(r\"[.!?]+\", paragraph_text)\n        for sentence_part in sentence_parts:\n            words_in_sentence = re.findall(r\"[A-Za-z0-9\\']+\", sentence_part)\n            words.extend(words_in_sentence)\n            if not words_in_sentence:\n                continue\n            terminators = re.findall(r\"[.!?]+\", sentence_part)\n            if terminators:\n                terminator = terminators[-1]\n                if not is_sentence_end(sentence_part, terminator):\n                    continue\n\n    print(\"paragraphs\", len(paragraphs))\n    print(\"sentences\", sum(1 for p in paragraphs if re.search(r\"[.!?]+\", p)))\n    print(\"words\", len(words))\n    if words:\n        print(\"longest\", max(words, key=lambda x: len(x)))\n    else:\n        print(\"longest\", \"-\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 397,
+    "prompt_tokens": 790,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1187
+  }
+}

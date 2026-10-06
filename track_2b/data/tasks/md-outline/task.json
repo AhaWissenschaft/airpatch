@@ -1,0 +1,14 @@
+{
+ "id": "md-outline",
+ "kind": "benchmark",
+ "title": "Markdown heading outline",
+ "tier": "T3",
+ "split": "test",
+ "entry": "main.py",
+ "editable": [
+  "main.py"
+ ],
+ "time_limit_s": 5,
+ "mem_limit_mb": 128,
+ "compare": "lines"
+}

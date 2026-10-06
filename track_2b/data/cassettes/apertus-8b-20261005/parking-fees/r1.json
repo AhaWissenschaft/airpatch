@@ -1,0 +1,29 @@
+{
+  "candidate": "r1",
+  "condition": "C2",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3146,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "parent": "c0",
+  "prompt_sha256": "9ff0812666f3298b09ab454fd37602766813e2e82f6e50fdee50c777182f5981",
+  "recorded_at": "20261005T082204Z-8b",
+  "round": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "parking-fees",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom datetime import datetime\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef calculate_blocks(duration_minutes):\n    blocks = duration_minutes // 60 + 1\n    return min(blocks, 24)\n\n\ndef calculate_period_price(blocks):\n    if blocks <= 24:\n        if 8 <= blocks <= 20:\n            return blocks * 2.5\n        else:\n            return blocks * 1.0\n    else:\n        return 18.0\n\n\ndef main():\n    totals = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) < 4:\n            print(f\"{parts[0]} invalid\")\n            continue\n        plate = parts[0]\n        entry_date = parts[1]\n        entry_time = parts[2]\n        exit_date = parts[3]\n        exit_time = parts[4]\n        \n        try:\n            entry = datetime.strptime(f\"{entry_date} {entry_time}\", \"%Y-%m-%d %H:%M\")\n            exit = datetime.strptime(f\"{exit_date} {exit_time}\", \"%Y-%m-%d %H:%M\")\n        except ValueError:\n            print(f\"{plate} invalid\")\n            continue\n        \n        duration = (exit - entry).total_seconds() / 60\n        if duration < 0:\n            print(f\"{plate} invalid\")\n            continue\n        \n        if duration <= 30:\n            fee = 0.0\n        else:\n            blocks = calculate_blocks(duration)\n            fee = calculate_period_price(blocks)\n        \n        totals[plate] = totals.get(plate, 0) + fee\n        print(f\"{plate} {duration // 60}:{duration % 60:02d} {fee:.2f}\")\n    \n    print(\"---\")\n    for plate in sorted(totals, key=lambda x: (-totals[x], x)):\n        print(f\"{plate} {totals[plate]:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 482,
+    "prompt_tokens": 2437,
+    "prompt_tokens_details": {
+      "cached_tokens": 1760,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 2919
+  }
+}

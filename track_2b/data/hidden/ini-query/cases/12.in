@@ -1,0 +1,8 @@
+level = global
+[app]
+level = app
+[app.sub]
+===
+app.level
+app.sub.level
+app.sub.missing

@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2759,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "3c88687b820a8b17197a5e14565ea710ad3b166890c372e565104f0df8dad2eb",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "table-align",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nimport re\n\n\ndef is_number(s):\n    if not s or (s[0] != '-' and (s[0] != '+' and (s[0] != '' and not s[0].isdigit())))\n        or (s[-1] == '.' and not s[-2].isdigit()):\n        return False\n    if s[0] == '-':\n        s = s[1:]\n    if '.' in s:\n        parts = s.split('.')\n        if len(parts) > 2 or not parts[1].isdigit():\n            return False\n    return s.isdigit()\n\n\ndef main():\n    rows = []\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        cells = line.split(\"|\")\n        cells = [cell.strip() for cell in cells]\n        if not cells:\n            continue\n        rows.append(cells)\n\n    if not rows:\n        return\n\n    headers = rows[0]\n    data_rows = rows[1:]\n\n    # Calculate widths\n    widths = []\n    for column_idx in range(len(headers)):\n        column_cells = [headers[column_idx]] + [row[column_idx] for row in data_rows]\n        max_len = max(len(cell) for cell in column_cells if cell)\n        widths.append(max_len if max_len > 0 else 1)\n\n    def fmt(row):\n        padded_cells = []\n        for column_idx in range(len(row)):\n            cell = row[column_idx]\n            width = widths[column_idx]\n            if is_number(cell):\n                padded_cell = cell.rjust(width)\n            else:\n                padded_cell = cell.ljust(width)\n            padded_cells.append(padded_cell)\n        return \" | \".join(padded_cells)\n\n    print(fmt(headers))\n    separator = \"-+-\".join(\"-\" * w for w in widths)\n    print(separator)\n    for row in data_rows:\n        print(fmt(row))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 434,
+    "prompt_tokens": 787,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1221
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5718,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "95282d0204e2b707acb1eb6512253e5780872bf1c6a31267fbc9bb536064254a",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "maze",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom collections import deque\n\n\ndef main():\n    lines = [line.rstrip(\"\\n\") for line in sys.stdin if line.strip()]\n    rows = len(lines)\n    if rows == 0:\n        print(\"NO PATH\")\n        return\n    cols = len(lines[0])\n\n    grid = []\n    for line in lines:\n        grid.append(list(line))\n\n    # Find start and exits\n    start = None\n    exits = []\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == \"S\":\n                start = (r, c)\n            elif grid[r][c] == \"E\":\n                exits.append((r, c))\n\n    if start is None or not exits:\n        print(\"NO PATH\")\n        return\n\n    # BFS to find shortest path\n    visited = set()\n    q = deque()\n    q.append((start[0], start[1], 0))\n    visited.add((start[0], start[1]))\n\n    while q:\n        r, c, steps = q.popleft()\n        if (r, c) in exits:\n            print(steps)\n            return\n        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] != \"#\" and (nr, nc) not in visited:\n                visited.add((nr, nc))\n                q.append((nr, nc, steps + 1))\n\n    # If no exit found\n    print(\"NO PATH\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 379,
+    "prompt_tokens": 659,
+    "prompt_tokens_details": {
+      "cached_tokens": 640,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1038
+  }
+}

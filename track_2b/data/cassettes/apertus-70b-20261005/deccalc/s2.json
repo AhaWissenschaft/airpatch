@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4199,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "a204b7a75fd3b08b56fa174f3f5bb5b6eb080377566f64ab44ca10bbd9168ce9",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "deccalc",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom decimal import Decimal, ROUND_HALF_UP\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            continue\n        a_str, op, b_str = parts\n        a = Decimal(a_str)\n        b = Decimal(b_str)\n        if op == \"+\":\n            result = a + b\n        elif op == \"-\":\n            result = a - b\n        elif op == \"*\":\n            result = a * b\n        elif op == \"/\":\n            if b == 0:\n                print(\"ERROR\")\n                continue\n            result = a / b\n            result = result.quantize(Decimal('0.0000000000'), rounding=ROUND_HALF_UP)\n        else:\n            print(\"ERROR\")\n            continue\n        if result == int(result):\n            print(str(int(result)))\n        elif result < 0:\n            print(str(result))\n        else:\n            print(str(result).rstrip('0').rstrip('.'))\n    return\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 261,
+    "prompt_tokens": 597,
+    "prompt_tokens_details": {
+      "cached_tokens": 576,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 858
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 5469,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "354d59583897e542af4d8e2334bdec24d2b8671eaecc774072537a84d2253450",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "mail-merge",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = sys.stdin.read().splitlines()\n    home = lines[0].split(\"=\")[1].strip()\n    for raw in lines[1:]:\n        raw = raw.strip()\n        if not raw:\n            continue\n        fields = raw.split(\";\")\n        title = fields[0].strip() if len(fields) >= 1 else \"\"\n        first = fields[1].strip() if len(fields) >= 2 else \"\"\n        last = fields[2].strip() if len(fields) >= 3 else \"\"\n        street = fields[3].strip() if len(fields) >= 4 else \"\"\n        postcode = fields[4].strip() if len(fields) >= 5 else \"\"\n        city = fields[5].strip() if len(fields) >= 6 else \"\"\n        country = fields[6].strip() if len(fields) >= 7 else \"\"\n\n        name_line = \" \".join(filter(lambda x: x, [title, first, last]))\n        name_line = \"To the occupant\" if first == \"\" and last == \"\" else name_line\n\n        if street == \"\" and postcode == \"\" and city == \"\":\n            continue\n\n        print(name_line)\n        if street:\n            print(street)\n        if postcode or city:\n            print(f\"{postcode} {city}\")\n        if country and country.strip().upper() != home.upper():\n            print(country.upper())\n        if street != \"\" or (postcode != \"\" or city != \"\"):\n            print(\"---\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 348,
+    "prompt_tokens": 828,
+    "prompt_tokens_details": {
+      "cached_tokens": 800,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1176
+  }
+}

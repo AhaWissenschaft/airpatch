@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 6718,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "12f7364758b92da331e37f0a17d9c18af9ad3e08a6902091309b2cb4c159a0eb",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "league",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\ndef main():\n    table = {}\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        home, away, score = line.split()\n        hg, ag = map(int, score.split(\"-\"))\n        \n        for team in (home, away):\n            if team not in table:\n                table[team] = {\"p\": 0, \"w\": 0, \"d\": 0, \"l\": 0, \"gf\": 0, \"ga\": 0}\n        \n        table[home][\"p\"] += 1\n        table[home][\"gf\"] += hg\n        table[home][\"ga\"] += ag\n        table[away][\"p\"] += 1\n        table[away][\"gf\"] += ag\n        table[away][\"ga\"] += hg\n        \n        if hg > ag:\n            table[home][\"w\"] += 1\n            table[away][\"l\"] += 1\n        elif hg < ag:\n            table[away][\"w\"] += 1\n            table[home][\"l\"] += 1\n        else:\n            table[home][\"d\"] += 1\n            table[away][\"d\"] += 1\n\n    def points(t):\n        return 3 * t[\"w\"] + t[\"d\"]\n\n    def goal_diff(t):\n        return t[\"gf\"] - t[\"ga\"]\n\n    def goals_for(t):\n        return t[\"gf\"]\n\n    # Sort teams based on the specified criteria\n    order = sorted(\n        table.keys(),\n        key=lambda name: (-points(table[name]), goal_diff(table[name]), goals_for(table[name]), name)\n    )\n\n    for rank, name in enumerate(order, 1):\n        t = table[name]\n        print(f\"{rank} {name} {t['p']} {t['w']} {t['d']} {t['l']} {t['gf']}:{t['ga']} {points(t)}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 452,
+    "prompt_tokens": 935,
+    "prompt_tokens_details": {
+      "cached_tokens": 928,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1387
+  }
+}

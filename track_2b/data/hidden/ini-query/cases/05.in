@@ -1,0 +1,11 @@
+# comment = not a key
+   ; indented comment
+[s]
+just some words
+  key   =   value with   inner   spaces   
+empty =
+===
+s.key
+s.empty
+s.just some words
+s.# comment

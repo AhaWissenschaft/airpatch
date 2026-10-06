@@ -1,0 +1,14 @@
+{
+ "id": "stats",
+ "kind": "benchmark",
+ "title": "Mean, median and mode",
+ "tier": "T2",
+ "split": "test",
+ "entry": "main.py",
+ "editable": [
+  "main.py"
+ ],
+ "time_limit_s": 5,
+ "mem_limit_mb": 128,
+ "compare": "lines"
+}

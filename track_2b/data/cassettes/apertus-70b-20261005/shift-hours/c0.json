@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 4702,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "f6257f71b5fb5eef4047058965e65dbb7f7ba360b2365f2fceb39c88556c4345",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "shift-hours",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom collections import defaultdict\n\n\ndef minutes(text):\n    h, m = text.split(\":\")\n    return int(h) * 60 + int(m)\n\n\ndef main():\n    totals = defaultdict(int)\n\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        parts = line.split()\n        if len(parts) != 3:\n            continue\n        name, start, end = parts\n\n        start_min = minutes(start)\n        end_min = minutes(end)\n\n        if end_min < start_min:\n            worked_min = (24 * 60 - start_min) + end_min\n        elif end_min == start_min:\n            worked_min = 0\n        else:\n            worked_min = end_min - start_min\n\n        if worked_min > 6 * 60:\n            if worked_min > 9 * 60:\n                worked_min -= 45\n            else:\n                worked_min -= 30\n\n        totals[name] += worked_min\n\n    for name in sorted(totals.keys()):\n        total_min = totals[name]\n        h = total_min // 60\n        m = total_min % 60\n        print(f\"{name} {h:02d}:{m:02d}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 294,
+    "prompt_tokens": 755,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1049
+  }
+}

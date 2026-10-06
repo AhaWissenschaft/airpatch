@@ -1,0 +1,28 @@
+{
+  "candidate": "s2",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2295,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "47c5c37b10aae5c76f6d924123c002e68488b9b28241fce544044cda2ce96e0b",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 2,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "text-stats",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport re\nimport sys\n\n\ndef main():\n    text = sys.stdin.read()\n    paragraphs = [p.strip() for p in text.split('\\n\\n') if p.strip()]\n    paragraphs_count = len(paragraphs)\n    \n    sentences = []\n    current_sentence = []\n    in_sentence = False\n    for line in text.split('\\n'):\n        line = line.strip()\n        if not line:\n            continue\n        if not in_sentence:\n            current_sentence = []\n            in_sentence = True\n        for word in re.findall(r\"[A-Za-z0-9'-]+\", line):\n            current_sentence.append(word)\n        if current_sentence:\n            terminators = re.findall(r\"[.!?]+\", line)\n            for terminator in terminators:\n                if terminator == \".\" and line.startswith((\".Mr\", \".Mrs\", \".Dr\", \".St\"), case=False):\n                    continue\n                sentences.append(\" \".join(current_sentence))\n                current_sentence = []\n                in_sentence = False\n    if current_sentence:\n        sentences.append(\" \".join(current_sentence))\n    sentences_count = len([s for s in sentences if s.strip()])\n    \n    words = []\n    for sentence in sentences:\n        words.extend(re.findall(r\"[A-Za-z0-9'-]+\", sentence))\n    words_count = len(words)\n    longest_word = max(words, key=len) if words else \"-\"\n    \n    print(\"paragraphs\", paragraphs_count)\n    print(\"sentences\", sentences_count)\n    print(\"words\", words_count)\n    print(\"longest\", longest_word)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 359,
+    "prompt_tokens": 790,
+    "prompt_tokens_details": {
+      "cached_tokens": 768,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1149
+  }
+}

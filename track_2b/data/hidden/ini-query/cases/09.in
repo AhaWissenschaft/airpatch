@@ -1,0 +1,6 @@
+[db]
+dsn = host=db;port=5432
+===
+   db.dsn   
+
+db.DSN

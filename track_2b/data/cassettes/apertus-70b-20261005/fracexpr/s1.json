@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 7082,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "7658570ee53622e562adacfd9afd7dc7789ae00922b45d065e2d8fcb9f4d3e02",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "fracexpr",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\nfrom fractions import Fraction\n\ndef tokenize(text):\n    tokens = []\n    i = 0\n    while i < len(text):\n        ch = text[i]\n        if ch.isspace():\n            i += 1\n        elif ch.isdigit():\n            j = i\n            while j < len(text) and text[j].isdigit():\n                j += 1\n            tokens.append(text[i:j])\n            i = j\n        else:\n            tokens.append(ch)\n            i += 1\n    return tokens\n\n\nclass Parser:\n    def __init__(self, tokens):\n        self.tokens = tokens\n        self.pos = 0\n\n    def peek(self):\n        return self.tokens[self.pos] if self.pos < len(self.tokens) else None\n\n    def take(self):\n        tok = self.peek()\n        self.pos += 1\n        return tok\n\n    def expr(self):\n        left = self.term()\n        if self.peek() in (\"+\", \"-\"):\n            op = self.take()\n            right = self.expr()\n            return left + right if op == \"+\" else left - right\n        return left\n\n    def term(self):\n        left = self.factor()\n        if self.peek() in (\"*\", \"/\"):\n            op = self.take()\n            right = self.term()\n            return left * right if op == \"*\" else left / right\n        return left\n\n    def factor(self):\n        tok = self.take()\n        if tok == \"-\":\n            return -self.factor()\n        if tok == \"(\":\n            value = self.expr()\n            self.take()\n            return value\n        return Fraction(tok)\n\n\ndef main():\n    for line in sys.stdin:\n        line = line.strip()\n        if not line:\n            continue\n        try:\n            value = Parser(tokenize(line)).expr()\n        except ZeroDivisionError:\n            print(\"ERROR\")\n            continue\n        if value.numerator == 0:\n            print(\"0\")\n        elif value.denominator == 1:\n            print(value.numerator)\n        else:\n            print(f\"{value.numerator}/{value.denominator}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 474,
+    "prompt_tokens": 971,
+    "prompt_tokens_details": {
+      "cached_tokens": 960,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 1445
+  }
+}

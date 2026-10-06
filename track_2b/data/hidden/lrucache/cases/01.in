@@ -1,0 +1,6 @@
+1
+put a 1
+put b 2
+get a
+get b
+dump

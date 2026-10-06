@@ -1,0 +1,28 @@
+{
+  "candidate": "s1",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 3176,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "6ef4aad6199747852254eca0475e02b7e8014d30f4a259a53eab4c61b3237416",
+  "recorded_at": "20261005T075518Z-19745",
+  "sample": 1,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "headline-case",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\nMINOR = {\"a\", \"an\", \"and\", \"as\", \"at\", \"but\", \"by\", \"for\", \"in\", \"nor\", \"of\", \"on\", \"or\", \"the\", \"to\"}\n\n\ndef headline(line):\n    words = line.split()\n    out = []\n    for word in words:\n        stripped_word = word.strip(',.!?;')\n        if stripped_word.lower() in MINOR:\n            if out and out[-1] != word:\n                out.append(word.lower())\n        else:\n            title_word = stripped_word.title()\n            if out:\n                out.append(title_word)\n            else:\n                out.insert(0, title_word)\n    return \" \".join(out)\n\n\ndef main():\n    for line in sys.stdin:\n        print(headline(line))\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 188,
+    "prompt_tokens": 572,
+    "prompt_tokens_details": {
+      "cached_tokens": 544,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 760
+  }
+}

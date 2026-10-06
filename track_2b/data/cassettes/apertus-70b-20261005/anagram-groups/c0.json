@@ -1,0 +1,27 @@
+{
+  "candidate": "c0",
+  "condition": "C0",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2679,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-70B",
+  "prompt_sha256": "5b68e16d983d6cd80252325018e23604ccc3d3f47fde5b4ed255f357bd9b4519",
+  "recorded_at": "20261005T075518Z-19745",
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-70B",
+  "source": "model",
+  "task": "anagram-groups",
+  "temperature": 0.0,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    groups = {}\n    for word in sys.stdin.read().split():\n        word = ''.join(c.lower() for c in word if c.isalpha())\n        if word:\n            key = \"\".join(sorted(word))\n            groups.setdefault(key, []).append(word)\n\n    result = []\n    for key in sorted(groups.keys()):\n        words = sorted(groups[key])\n        if len(words) > 1:\n            result.append(\" \".join(words))\n\n    if result:\n        result.sort(key=lambda x: (-len(x.split()), x))\n        for line in result:\n            print(line)\n    else:\n        print()\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 157,
+    "prompt_tokens": 498,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 655
+  }
+}

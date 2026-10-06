@@ -1,0 +1,28 @@
+{
+  "candidate": "s3",
+  "condition": "C1",
+  "error": null,
+  "finish_reason": "stop",
+  "latency_ms": 2067,
+  "mode": "LIVE",
+  "model": "swiss-ai/Apertus-v1.5-8B",
+  "prompt_sha256": "7357422e934e85936a1652e2b080d9dee51e70d1a8847ae044bfcb6d9703bbc3",
+  "recorded_at": "20261005T082204Z-8b",
+  "sample": 3,
+  "schema": 1,
+  "served_model": "swiss-ai/Apertus-v1.5-8B",
+  "source": "model",
+  "task": "allocate",
+  "temperature": 0.7,
+  "text": "FILE: main.py\n```python\nimport sys\n\n\ndef main():\n    lines = [line.strip() for line in sys.stdin if line.strip()]\n    amount_str = lines[0]\n    amount = float(amount_str.replace(',', '')) if '.' in amount_str else float(amount_str)\n    people = []\n    for line in lines[1:]:\n        name, weight_str = line.split(' ', 1)\n        people.append((name, int(weight_str)))\n    total_weight = sum(w for _, w in people)\n    if total_weight == 0:\n        print(\"ERROR\")\n        return\n    shares = [round(amount * w / total_weight, 2) for name, w in people]\n    remaining = amount\n    for share in shares:\n        remaining -= share\n    if remaining != 0:\n        fractional_parts = [(w - share, name, idx) for idx, (name, w) in enumerate(people)]\n        fractional_parts.sort(reverse=True, key=lambda x: x[0])\n        for _, name, idx in fractional_parts:\n            if remaining <= 0:\n                break\n            shares[idx] += 1\n            remaining -= 1\n    for name, share in zip(people, shares):\n        print(f\"{name} {share:.2f}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "tries": 1,
+  "usage": {
+    "completion_tokens": 287,
+    "prompt_tokens": 703,
+    "prompt_tokens_details": {
+      "cached_tokens": 672,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 990
+  }
+}
